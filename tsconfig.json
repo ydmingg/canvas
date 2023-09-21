@@ -1,0 +1,31 @@
+{
+    "compilerOptions": {
+        "target": "esnext",                 // 打包语言版本
+        "lib": [
+            "dom",
+            "esnext"
+        ],
+        "module": "ESNext",                 // 打包代码的模块标准
+        "removeComments": true,             // 去除注释
+        "declaration": true,                
+        "sourceMap": true,                  // 是否生成 .js.map 文件
+        /* 强类型检查配置 */
+        "strict": true,
+        "noImplicitAny": false,
+        /* 模块分析配置 */
+        "baseUrl": "./",
+        "outDir": "lib",
+        "esModuleInterop": true,
+        "moduleResolution": "node",
+        "resolveJsonModule": true,
+        "paths": {
+            "@src/*": ["src/*"]
+        }
+    },
+    // "include": [
+    //     "src"
+    // ]
+}
+
+
+        
