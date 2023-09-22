@@ -3,7 +3,14 @@ const tpl = () => {
     // 定义渲染容器
     const Box = [
         { name: "paintbrush" },
-        { name: "cc" },
+        { name: "pen" },
+        { name: "square" },
+        { name: "circle" },
+        { name: "polygon" },
+        { name: "stellate" },
+        { name: "image" },
+        { name: "text" },
+        { name: "container" },
     ]
 
     // 引入
