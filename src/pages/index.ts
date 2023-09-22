@@ -16,7 +16,8 @@ const tpl = () => {
     // 引入
     let oApp = document.querySelector("#app") as HTMLElement;
     // 样式
-    oApp.style.cssText = `  display:grid;
+    oApp.style.cssText = `  overflow: hidden auto; 
+                            display:grid;
                             grid-gap: 40px;
                             grid-template-rows: repeat(auto-fill,300px);
                             grid-template-columns: repeat(auto-fill,300px);
