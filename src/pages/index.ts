@@ -32,16 +32,20 @@ const tpl = () => {
         let oCanvas = document.createElement("canvas");
         let oP = document.createElement("p");
         // 定义样式
+        
         oDiv.style.minHeight = "300px"
+        // oDiv.style.gridColumn = "1/3"
         oDiv.className = `row rowcolumn align-center`
         oCanvasDiv.className = `${el.name} flex1 w-100\% mb-12`
-        oCanvas.className = `border-radius-xl box-shadow-all w-100\%`
+        oCanvas.className = `border-radius-xl box-shadow-all`
         oP.textContent = `${el.name}`
         // 渲染
-        oApp.appendChild(oDiv)
-        oDiv.appendChild(oCanvasDiv)
-        oCanvasDiv.appendChild(oCanvas)
-        oDiv.appendChild(oP)
+        oApp.appendChild(oDiv);
+        oDiv.appendChild(oCanvasDiv);
+        oCanvasDiv.appendChild(oCanvas);
+        oDiv.appendChild(oP);
+        (oApp.firstChild as HTMLElement).style.gridColumn = "1/3";
+        
         // 继承父容器大小
         oCanvas.width = oCanvasDiv.clientWidth
         oCanvas.height = oCanvasDiv.clientHeight
