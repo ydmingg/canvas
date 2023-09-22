@@ -24,7 +24,6 @@
     "rollup-plugin-postcss": "^4.0.2",
     "rollup-plugin-serve": "^2.0.2",
     "rollup-plugin-typescript2": "^0.34.1",
-    "template": "git+ssh://git@gitee.com:funxd/template.git",
     "typescript": "^5.0.4"
   }
 }

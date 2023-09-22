@@ -1,7 +1,7 @@
-// 测试
-import * as canvas from "./canvas/index";
-canvas.index();
+// 渲染框架
+import Container from "./pages/index";
+import Content from "./canvas/index";
+Container();
 
-// canvasEditor
-// import apps from "./apps/index";
-// apps.index();
+// 渲染内容
+Content()

@@ -27,10 +27,7 @@
 
 const pages = () => {
     // 获取canvas容器
-    let oCanvas = document.querySelector("#app #canvas") as HTMLCanvasElement;
-    oCanvas.width = 500
-    oCanvas.height = 500
-
+    let oCanvas = document.querySelector("#app .paintbrush canvas") as HTMLCanvasElement 
     
     let ctx = oCanvas.getContext("2d") as CanvasRenderingContext2D;
     
