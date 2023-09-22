@@ -91,7 +91,7 @@ if (isProduction) {
     const extraPlugins = [
         serve({
             host: '192.168.5.235',
-            port: 8060,
+            port: 8062,
             // open: true,
             contentBase: './',
         }),
