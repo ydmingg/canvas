@@ -2,6 +2,7 @@
 const tpl = () => { 
     // 定义渲染容器
     const Box = [
+        { name: "notes" },
         { name: "paintbrush" },
         { name: "pen" },
         { name: "square" },
@@ -34,7 +35,6 @@ const tpl = () => {
         // 定义样式
         
         oDiv.style.minHeight = "300px"
-        // oDiv.style.gridColumn = "1/3"
         oDiv.className = `row rowcolumn align-center`
         oCanvasDiv.className = `${el.name} flex1 w-100\% mb-12`
         oCanvas.className = `border-radius-xl box-shadow-all`
