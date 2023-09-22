@@ -22,6 +22,7 @@ const tpl = () => {
                             grid-template-rows: repeat(auto-fill,300px);
                             grid-template-columns: repeat(auto-fill,300px);
                             padding: 40px;
+                            user-select:none;
                         `
     // 渲染
     Box.forEach((el) => { 
