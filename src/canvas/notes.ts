@@ -26,7 +26,124 @@
  * **/
 
 const pages = () => { 
+    let oCanvas = document.querySelector("#app .notes canvas") as HTMLCanvasElement;
+    let ctx = oCanvas.getContext("2d") as CanvasRenderingContext2D;
+
+    let WIDTH = oCanvas.width
+    let HEIGHT = oCanvas.height
+
+    let arr = new Array
+    let bool = true
+    let index = 80
     
+    class Round{
+        index: number;
+        x: any;
+        y: any;
+        cacheCanvas: HTMLCanvasElement
+        cancheCtx: any
+        r: any
+        color:any
+        constructor(index:number, x:any, y:any) { 
+            this.index = index
+            this.x = x
+            this.y = y
+            this.cacheCanvas = document.createElement("canvas")
+            this.cancheCtx = this.cacheCanvas.getContext("2d") 
+            this.cancheCtx.width = 9 * this.r
+            this.cancheCtx.height = 6 * this.r;
+            this.r = Math.random() * 2 + 1;     
+            var alpha = (Math.floor(Math.random() * 10) + 1) / 10 / 2;
+            this.color = `rgba(255,255,255,${alpha})`;
+
+            if(bool){
+                this.cache();
+            }
+        }
+
+        draw() {
+            if( !bool ){
+                ctx.fillStyle = this.color;
+                ctx.shadowBlur = this.r * 2;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.r, 0, 2 * Math.PI, false);
+                ctx.closePath();
+                ctx.fill();
+            }else{
+                ctx.drawImage(this.cacheCanvas, this.x - this.r, this.y - this.r);
+            }
+        };
+        
+        cache() {
+            this.cancheCtx.save();
+            this.cancheCtx.fillStyle = this.color;
+            this.cancheCtx.shadowColor = "red";
+            this.cancheCtx.shadowBlur = this.r * 2;
+            this.cancheCtx.beginPath();
+            this.cancheCtx.arc(this.r * 3, this.r * 3, this.r, 0, 2 * Math.PI);
+            this.cancheCtx.closePath();
+            this.cancheCtx.fill();
+            this.cancheCtx.restore();
+            
+        }
+        
+        move() {
+            this.y -= 0.15;
+            if (this.y <= -10) {
+                this.y = HEIGHT + 10;
+            }
+            this.draw();
+        };
+    }
+
+    let animate = ()=>{
+        ctx.clearRect(0, 0, WIDTH, HEIGHT);
+        for (var i in arr) {
+            arr[i].move();
+        }
+        requestAnimationFrame(animate)
+    }
+
+    function init() {
+        for (var i = 0; i < index; i++) {
+            arr[i] = new Round(i, Math.random() * WIDTH, Math.random() * HEIGHT);
+            arr[i].draw();
+        }
+        animate();
+    }
+
+    init();
+
+    let xx = {
+        x:0
+    }
+    
+    
+    const Are = class{ 
+        name: any;
+        constructor() {
+            let gg = Object.create(xx)
+            return gg
+        }
+        fun() {
+            this.name = 123
+            return this.name
+        }
+    }
+
+    
+    
+    
+    
+
+
+    
+    
+
+    
+
+
+
 }
 
 export default pages;
