@@ -6,6 +6,7 @@ import Canvas_circle from "./circle";
 import Canvas_polygon from "./polygon";
 import Canvas_text from "./text";
 import Canvas_image from "./image";
+import Canvas_container from "./container";
 
 
 // 主代码
@@ -26,6 +27,8 @@ const tpl = () => {
     Canvas_text();
     // 图像合成
     Canvas_image();
+    // 处理图像
+    Canvas_container();
 
 
 
