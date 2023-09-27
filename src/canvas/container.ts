@@ -8,10 +8,18 @@ const page = () => {
     img.onload = () => { 
         ctx.drawImage(img,50,50,300,300,50,50,100,100)
     }
+
+    var languages = [
+        { name: "JavaScript", fileExtension: ".js" },
+        { name: "TypeScript", fileExtension: ".ts" },
+        { name: "CoffeeScript", fileExtension: ".coffee" }
+    ];
+      
+    console.table(languages);
     
-
-
-
+    
+    
+    
 }
 
 export default page;
