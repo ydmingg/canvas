@@ -29,7 +29,7 @@ const pages = () => {
 
     ctx.globalCompositeOperation = 'destination-out'
 
-    
+    // funArc.rect(50, 50, 200, 200, "#ff0000")
     // ctx.beginPath()
     // ctx.arc(0, 0, 20, 0, 2 * Math.PI, true)
     // ctx.fill()
