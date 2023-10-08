@@ -40,18 +40,18 @@ const pages = () => {
         index: number;
         x: any;
         y: any;
-        cacheCanvas: HTMLCanvasElement
-        cancheCtx: any
+        _dom: HTMLCanvasElement
+        _type: any
         r: any
         color:any
         constructor(index:number, x:any, y:any) { 
             this.index = index
             this.x = x
             this.y = y
-            this.cacheCanvas = document.createElement("canvas")
-            this.cancheCtx = this.cacheCanvas.getContext("2d") 
-            this.cancheCtx.width = 9 * this.r
-            this.cancheCtx.height = 6 * this.r;
+            this._dom = document.createElement("canvas")
+            this._type = this._dom.getContext("2d") 
+            this._type.width = 9 * this.r
+            this._type.height = 6 * this.r;
             this.r = Math.random() * 2 + 1;     
             var alpha = (Math.floor(Math.random() * 10) + 1) / 10 / 2;
             this.color = `rgba(255,255,255,${alpha})`;
@@ -70,20 +70,20 @@ const pages = () => {
                 ctx.closePath();
                 ctx.fill();
             }else{
-                ctx.drawImage(this.cacheCanvas, this.x - this.r, this.y - this.r);
+                ctx.drawImage(this._dom, this.x - this.r, this.y - this.r);
             }
         };
         
         cache() {
-            this.cancheCtx.save();
-            this.cancheCtx.fillStyle = this.color;
-            this.cancheCtx.shadowColor = "red";
-            this.cancheCtx.shadowBlur = this.r * 2;
-            this.cancheCtx.beginPath();
-            this.cancheCtx.arc(this.r * 3, this.r * 3, this.r, 0, 2 * Math.PI);
-            this.cancheCtx.closePath();
-            this.cancheCtx.fill();
-            this.cancheCtx.restore();
+            this._type.save();
+            this._type.fillStyle = this.color;
+            this._type.shadowColor = "red";
+            this._type.shadowBlur = this.r * 2;
+            this._type.beginPath();
+            this._type.arc(this.r * 3, this.r * 3, this.r, 0, 2 * Math.PI);
+            this._type.closePath();
+            this._type.fill();
+            this._type.restore();
             
         }
         
@@ -134,9 +134,41 @@ const pages = () => {
 
 
     
-   
+    const obj = {
+        a: "1",
+        b: 2,
+        c: [11, [1,2,3,4], 33],
+        d :{aa:111,bb:222,cc:[999,888,777]}
+    }
+
+    // let obj2 = obj;
+    // obj2.a = "afeifei"
+    // obj2.c[1] = [1, 2]
+    
+    // console.log(obj);
+    // console.log(obj2);
+
+    function shallCopy(oObj) { 
+        let element = {}
+        for (const key in oObj) {
+            if (Object.prototype.hasOwnProperty.call(oObj, key)) {
+                element = oObj[key];
+            }
+        }
+        return element
+    }
     
 
+    let obj2 = shallCopy(obj)
+
+    console.log(obj);
+    
+    
+    
+
+
+    
+   
     
     
 
