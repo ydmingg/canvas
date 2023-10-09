@@ -6,6 +6,10 @@
 // Content()
 
 
+// Konva 框架示例
+// import konva from "./konva/index";
+// konva();
 
-import konva from "./konva/index";
-konva();
+// Canvas评论功能
+import comment from "./comment/index";
+comment();
