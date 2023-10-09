@@ -1,6 +1,6 @@
 {
   "name": "canvas",
-  "version": "1.10.081",
+  "version": "1.10.091",
   "description": "",
   "main": "index.js",
   "type": "module",
@@ -25,5 +25,8 @@
     "rollup-plugin-serve": "^2.0.2",
     "rollup-plugin-typescript2": "^0.34.1",
     "typescript": "^5.0.4"
+  },
+  "dependencies": {
+    "konva": "^9.2.1"
   }
 }
