@@ -1,15 +1,9 @@
-// 渲染框架
-// import Container from "./pages/index";
-// import Content from "./canvas/index";
-// Container();
-// // 渲染内容
-// Content()
+import comment from "./comment/creat";
+
+// 加载主内容（）
+
+// 加载评论（创建。。。）
+comment.creat();
 
 
-// Konva 框架示例
-// import konva from "./konva/index";
-// konva();
-
-// Canvas评论功能
-import comment from "./comment/index";
-comment();
+// 加载控件（放大，缩小）

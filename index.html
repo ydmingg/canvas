@@ -12,12 +12,52 @@
     <script type="module" src="./lib/index.js"></script>
 </head>
 <style>
+    #Text{
+        position: absolute;
+        top: 10vh;
+        left: 10vw;
+        width: 300px;
+        padding: 20px;
+        background-color: rgba(0,0,0,.3);
+        z-index: 9;
+    }
+    #Text li{
+        /* display: none; */
+        margin-bottom: 4px;
+    }
+    #Text label{
+        width: 80px;
+        text-align: right;
+    }
+    #Text input{
+        width: 0;
+        padding: 0 4px;
+        background-color: #e2e2e2;
+    }
+    #app{
+        width: 80vw;
+        height: 80vh;
+        margin:  10vh auto;
+        background: #f6f6f6;
+    }
     #app .konvajs-content{
         cursor: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAAXNSR0IArs4c6QAAAoZJREFUOE+tlM2LEnEYx79TW74QtrmaB9OTBC2i0a0w9rAH7bJBBfsPKAUeGrrtzcuyC7HLdBAK99A99pCX0JCQHeqyhCv2Bh4W01A0c2XzpRcnvjITs9u6KPSDh5mB+X1+z+/5Ps9XwH9ewgjeSQCn1JjyeDxTxWLxFwDGTzV+H7X3MJDfUwCMpVLprsViuW00Gn0Gg8Hc7/c7vV4v3263N91u9xMAPfUARQ/WA08AOJ3NZq95vd7HOzs705Ik2WVZRrPZhNVqRSAQgCiKdb/f3yoUCvfm5uZeA/gBYKBBNSCfhlQqdT0QCDwXRdGUSCRGVjcSiUCSpK4syzeDweAWgD6AYaYakPU622g03iwtLXmOg2mnELqyslK02WxXAeypdR0CKYA5n8+L9Xr9/vz8/My4wmcyma92u/2Rz+eTAOwzy+FVmV2tVnsRiUSuJJPJcXlYWFhAIpF463A4bgBoUiQCzwCwdrvdj06n00QBxl0UqlKpdE0m0yUANSpP4DQA28bGxmY4HPaNC9P+UxQFgiBcBPAFwHcCzwGwK4rySRBG9fnRxzDDcrncM5vNlwFUWEcSKAKBHyYFsobxeLzgcrlu6TMk8LyiKO8nBabT6dZgMHgaCoWo8t8a2lTgu0mA7MNYLPbZ6XTeAbCrV3liIGHr6+v95eXlB6urqy8BVPV9SCBreOyVtVmORqN7s7Oz+5IkPVxbW3ul1u7ApFDlmVwuJ/v9fseotul0Ov1qtbq7vb29tbi4+EytGevWOjzLbGwLgAuq4mbdjGt8ugl9sAugDeCbGhy3f9yGxsDxI5Qwfusbki7CoKFyM6GMkX7IzfRCgmgUfD9qMUtCGXTuA8aqbfgDbwX6FZVkzdAAAAAASUVORK5CYII=)2 17,auto;
     }
 </style>
 
 <body>
+    <ul id="Text" class="bg-gray-200">
+        <li class="list row align-center">
+            <label for="url">url：</label><input class="flex1" type="text" value="https://book.funxdata.com/public/img/webmanage/AI.png">
+        </li>
+        <li class="list row align-center">
+            <label for="url">name：</label><input class="flex1" type="text" value="Zhang">
+        </li>
+        <li class="list row align-center">
+            <label for="url">content：</label><input class="flex1" type="text" value="我这边换了贴图看了以后，和没有贴图的情况 没有区别">
+        </li>
+        <li class="list row justify-end"><button class="vg-btn btn-type-brand btn-size-sm btn-block">更新</button></li>
+    </ul>
     <div id="app"></div>
     <div id="popout"></div>
 </body>
