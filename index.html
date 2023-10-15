@@ -7,59 +7,90 @@
     <link rel="icon" href="https://book.funxdata.com/public/per/ly.ico">
     <meta name="viewport" content="width=device-width,minimum-scale=1,maximum-scale=1,initial-scale=1,user-scalable=no">
     <title>Canvas</title>
-    <link href="https://static.funxdata.com/release/css/fxcss18181.css" rel="stylesheet">
+    <link href="http://172.20.10.7:8081/public/showroom218182.css" rel="stylesheet">
     <link href="https://static.funxdata.com/release/font20230811/icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/swiper@10.3.1/swiper-bundle.min.css" />
     <script type="module" src="./lib/index.js"></script>
 </head>
-<style>
-    #Text{
-        display: none;
-        position: absolute;
-        top: 10vh;
-        left: 10vw;
-        width: 300px;
-        padding: 20px;
-        background-color: rgba(0,0,0,.3);
-        z-index: 9;
-    }
-    #Text li{
-        /* display: none; */
-        margin-bottom: 4px;
-    }
-    #Text label{
-        width: 80px;
-        text-align: right;
-    }
-    #Text input{
-        width: 0;
-        padding: 0 4px;
-        background-color: #e2e2e2;
-    }
-    #app{
-        width: 80vw;
-        height: 80vh;
-        margin:  10vh auto;
-        background: #f6f6f6;
-    }
-    #app .konvajs-content{
-        cursor: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAAXNSR0IArs4c6QAAAoZJREFUOE+tlM2LEnEYx79TW74QtrmaB9OTBC2i0a0w9rAH7bJBBfsPKAUeGrrtzcuyC7HLdBAK99A99pCX0JCQHeqyhCv2Bh4W01A0c2XzpRcnvjITs9u6KPSDh5mB+X1+z+/5Ps9XwH9ewgjeSQCn1JjyeDxTxWLxFwDGTzV+H7X3MJDfUwCMpVLprsViuW00Gn0Gg8Hc7/c7vV4v3263N91u9xMAPfUARQ/WA08AOJ3NZq95vd7HOzs705Ik2WVZRrPZhNVqRSAQgCiKdb/f3yoUCvfm5uZeA/gBYKBBNSCfhlQqdT0QCDwXRdGUSCRGVjcSiUCSpK4syzeDweAWgD6AYaYakPU622g03iwtLXmOg2mnELqyslK02WxXAeypdR0CKYA5n8+L9Xr9/vz8/My4wmcyma92u/2Rz+eTAOwzy+FVmV2tVnsRiUSuJJPJcXlYWFhAIpF463A4bgBoUiQCzwCwdrvdj06n00QBxl0UqlKpdE0m0yUANSpP4DQA28bGxmY4HPaNC9P+UxQFgiBcBPAFwHcCzwGwK4rySRBG9fnRxzDDcrncM5vNlwFUWEcSKAKBHyYFsobxeLzgcrlu6TMk8LyiKO8nBabT6dZgMHgaCoWo8t8a2lTgu0mA7MNYLPbZ6XTeAbCrV3liIGHr6+v95eXlB6urqy8BVPV9SCBreOyVtVmORqN7s7Oz+5IkPVxbW3ul1u7ApFDlmVwuJ/v9fseotul0Ov1qtbq7vb29tbi4+EytGevWOjzLbGwLgAuq4mbdjGt8ugl9sAugDeCbGhy3f9yGxsDxI5Qwfusbki7CoKFyM6GMkX7IzfRCgmgUfD9qMUtCGXTuA8aqbfgDbwX6FZVkzdAAAAAASUVORK5CYII=)2 17,auto;
-    }
-</style>
 
 <body>
-    <ul id="Text" class="bg-gray-200">
-        <li class="list row align-center">
-            <label for="url">url：</label><input class="flex1" type="text" value="https://book.funxdata.com/public/img/webmanage/AI.png">
-        </li>
-        <li class="list row align-center">
-            <label for="url">name：</label><input class="flex1" type="text" value="Zhang">
-        </li>
-        <li class="list row align-center">
-            <label for="url">content：</label><input class="flex1" type="text" value="我这边换了贴图看了以后，和没有贴图的情况 没有区别">
-        </li>
-        <li class="list row justify-end"><button class="vg-btn btn-type-brand btn-size-sm btn-block">更新</button></li>
-    </ul>
-    <div id="app"></div>
+    <div id="app">
+        <div class="aio-container">
+            <div class="aio-cover" fxtag="cover-container">
+
+            </div>
+            <div class="aio-product hide" fxtag="product-container">
+                <!-- 主容器 -->
+                <div class="data-container row align-center content-center justify-center" fxtag="content">
+                    <div class="data-container-value">
+                        <!-- 图片 -->
+                        <div id="swiper" class="swiper">
+                            <div class="swiper-container">
+                                <div class="swiper-wrapper">
+                                    <div class="swiper-slide"><img src="https://book.funxdata.com/public/img/showroom2/aio-card-bg1.jpg" alt=""></div>
+                                    <div class="swiper-slide"><img src="https://book.funxdata.com/public/img/showroom2/aio-card-bg1.jpg" alt=""></div>
+                                    <div class="swiper-slide"><img src="https://book.funxdata.com/public/img/showroom2/aio-card-bg1.jpg" alt=""></div>
+                                </div>
+                                <!-- 如果需要分页器 -->
+                                <div class="swiper-pagination"></div>
+
+                                <!-- 如果需要导航按钮 -->
+                                <div class="swiper-button-prev"></div>
+                                <div class="swiper-button-next"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 左下角退出按钮 -->
+                <div class="exit-container row align-center" fxtag="exit">
+                    <button class="exit-container-value row align-center">
+                        <i class="vg-icon ic-left"></i>
+                        <span>退出</span>
+                    </button>
+                </div>
+
+                <!-- 导航 -->
+                <div class="feature-container row align-center" fxtag="nav">
+                    <div class="feature-container-value row align-center justify-end auto-width">
+                        <button class="select btn row rowcolumn justify-center align-center">
+                            <i class="vg-icon ic-photo"></i>
+                            <p class="number">图片</p>
+                        </button>
+                        <button class="btn row rowcolumn justify-center align-center">
+                            <i class="vg-icon ic-video"></i>
+                            <p class="number">视频</p>
+                        </button>
+                        <button class="btn row rowcolumn justify-center align-center">
+                            <i class="vg-icon ic-heart"></i>
+                            <p class="number">3D</p>
+                        </button>
+                        <button class="btn row rowcolumn justify-center align-center">
+                            <i class="vg-icon ic-heart"></i>
+                            <p class="number">6662</p>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 右下角标题 -->
+                <div class="title-container row align-center" fxtag="title">
+                    <div class="title-container-value row rowcolumn justify-center">
+                        <div class="row align-center">
+                            <h1 class="title flex1 text-left text-overflow">黄铁矿晶簇</h1>
+                            <button class="btn row align-center"><i class="vg-icon ic-transition-top"></i></button>
+                        </div>
+                        <div class="text flex1 hide">简介</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+
+    </div>
     <div id="popout"></div>
 </body>
 
