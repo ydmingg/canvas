@@ -90,8 +90,8 @@ if (isProduction) {
     // 开发环境下配置
     const extraPlugins = [
             serve({
-                host: '172.20.10.7',
-                port: 8062,
+                host: '192.168.5.235',
+                port: 8060,
                 // open: true,
                 contentBase: './',
             }),

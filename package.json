@@ -1,12 +1,14 @@
 {
 	"name": "canvas",
-	"version": "1.10.114",
+	"version": "1.10.116",
 	"description": "",
 	"main": "index.js",
 	"type": "module",
 	"scripts": {
 		"dev": "rimraf dist && rollup -c -w --environment NODE_ENV:development",
-		"build": "rimraf dist && rollup -c --environment NODE_ENV:production"
+		"build": "rimraf dist && rollup -c --environment NODE_ENV:production",
+    	"tpl": "rm -rf pages && mkdir pages && ./fxtpl pack ./tpl ./pages"
+		
 	},
 	"author": "",
 	"license": "ISC",
@@ -24,11 +26,10 @@
 		"rollup-plugin-postcss": "^4.0.2",
 		"rollup-plugin-serve": "^2.0.2",
 		"rollup-plugin-typescript2": "^0.34.1",
+		"template": "git+ssh://git@gitee.com:funxd/template.git",
 		"typescript": "^5.0.4"
 	},
 	"dependencies": {
-		"konva": "^9.2.1",
-		"swiper": "^10.3.1",
-		"template": "git+ssh://git@gitee.com:funxd/template.git"
+		"konva": "^9.2.1"
 	}
 }
