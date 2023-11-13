@@ -1,75 +1,70 @@
 import Konva from 'konva';
-// 定义 Comment 类型
-interface Comment {
-  box: Konva.Circle | Konva.Group;
-}
+const commentBox = (stage: Konva.Stage, layer: Konva.Layer, x: number, y: number, index: number): Konva.Group => { 
+    // 获取当前画布的缩放因子
+    const scale = stage.scaleX();
+    // 计算缩放后的坐标
+    const adjustedX = (x - stage.x()) / scale;
+    const adjustedY = (y - stage.y()) / scale;
+    // 固定标注点的半径
+    const fixedRadius = 10;
 
-const commentBox = (stage: Konva.Stage, layer: Konva.Layer, comments: Comment[], x: number, y: number): void => { 
-  // 获取当前画布的缩放因子
-  const scale = stage.scaleX();
-  // 计算缩放后的坐标
-  const adjustedX = (x - stage.x()) / scale;
-  const adjustedY = (y - stage.y()) / scale;
-
-  // 创建评论框
-  const commentBox = new Konva.Circle({
-    x: adjustedX,
-    y: adjustedY,
-    fill: 'yellow',
-    radius: 10,
-    draggable: true,
-  });
-  // 添加类名
-  commentBox.setAttr('class', 'commentBox');
-  // 添加自定义属性存储半径信息
-  commentBox.setAttr('originalRadius', 10);
-
-  // 将评论框和评论文本添加到图层
-  layer.add(commentBox);
-  
-  // 更新图层
-  layer.batchDraw();
-
-  // 标注点缩放缓动
-  const tween = new Konva.Tween({
-    node: commentBox,
-    scaleX:1.6,
-    scaleY:1.6,
-    easing: Konva.Easings.EaseIn,
-    duration: .2,
-  });
-  commentBox.on('mouseover touchstart', function (el) {
-    stage.container().style.cursor = 'pointer';
-    commentBox.draw();
-    tween.play()
-  })
-  commentBox.on('mouseout touchend', function (el) {
-    stage.container().style.cursor = "default";
-    commentBox.draw();
-    tween.reverse();
-  });
-
-
-  // 创建评论文本
-  //   const commentText = new Konva.Text({
-  //     x: x + 5,
-  //     y: y + 5,
-  //     text,
-  //     fontSize: 14,
-  //     fill: 'black',
-  //   });
-
-
-  //   layer.add(commentText);
-
-  // 将评论保存到数组中
-    comments.push({ box: commentBox});
-
-  // 更新图层
-  // layer.draw();
-
+    // 创建标注组
+    const commentGroup = new Konva.Group({
+        x: adjustedX,
+        y: adjustedY,
+        scaleX: 1,
+        scaleY: 1,
+        draggable: true,
+    });
     
-    
+    // 创建评论框
+    const commentBoxBg = new Konva.Circle({
+        x: 0,
+        y: 0,
+        fill: 'yellow',
+        radius: fixedRadius,
+    });
+    // 创建数字
+    const commentBoxText = new Konva.Text({
+        text: index.toString(),
+        x: 0,
+        y: 0,
+        fontSize: 12,
+        lineHeight: 1,
+        fill: 'black'
+    });
+    // 设置文本的偏移量
+    commentBoxText.offsetX(commentBoxText.width() / 2);
+    commentBoxText.offsetY(fixedRadius / 2);
+
+    // 将标注点放到标注组中
+    commentGroup.add(commentBoxBg, commentBoxText)
+
+    // 更新图层
+    layer.add(commentGroup);
+    layer.batchDraw();
+
+    // 标注点缩放缓动
+    const tween = new Konva.Tween({
+        node: commentGroup,
+        scaleX:1.6,
+        scaleY:1.6,
+        easing: Konva.Easings.EaseIn,
+        duration: .2,
+    });
+    commentGroup.on('mouseover touchstart', function () {
+        stage.container().style.cursor = 'pointer';
+        // commentGroup.draw();
+        tween.play()
+    })
+    commentGroup.on('mouseout touchend', function () {
+        stage.container().style.cursor = "default";
+        // commentGroup.draw();
+        tween.reverse();
+    });
+
+    // 返回评论框组对象，以便在外部可以继续操作
+    return commentGroup;
 }
 
 export default commentBox;

@@ -1,14 +1,13 @@
 {
 	"name": "canvas",
-	"version": "1.10.116",
+	"version": "1.11.131",
 	"description": "",
 	"main": "index.js",
 	"type": "module",
 	"scripts": {
 		"dev": "rimraf dist && rollup -c -w --environment NODE_ENV:development",
 		"build": "rimraf dist && rollup -c --environment NODE_ENV:production",
-    	"tpl": "rm -rf pages && mkdir pages && ./fxtpl pack ./tpl ./pages"
-		
+		"tpl": "rm -rf pages && mkdir pages && ./fxtpl pack ./tpl ./pages"
 	},
 	"author": "",
 	"license": "ISC",

@@ -4,6 +4,11 @@ import { canvas } from "pages/canvas";
 // import Canvas from "@src/pages/canvas/index";
 import addComment from "@src/pages/canvas";
 
+// 定义 Comment 类型
+interface Comment {
+    box: Konva.Circle | Konva.Group;
+}
+
 const pages = () => { 
     // 渲染主结构
     template.render(canvas.index, {}, "app");
@@ -12,7 +17,6 @@ const pages = () => {
     let oCanvas = document.querySelector('[fxtag="canvas"]') as HTMLDivElement;
     let w = window.innerWidth
     let h = window.innerHeight
-    let bool = true
     oCanvas.style.backgroundImage = "url('https://book.funxdata.com//public/img/showroom/bodybg.png')";
     
     
@@ -26,8 +30,6 @@ const pages = () => {
     const layer = new Konva.Layer();
     stage.add(layer);
 
-    const comments: Comment[] = [];
-
     // 监听画布是否缩放
     stage.on('wheel', (e) => {
         e.evt.preventDefault();
@@ -38,16 +40,7 @@ const pages = () => {
         const scaleBy = 1.05;
         const newScale = e.evt.deltaY > 0 ? oldScale * scaleBy : oldScale / scaleBy;
         // 获取标注点的数组
-        const commentBoxes = layer.find('.commentBox');
-        // 调整标注点的大小，以抵消画布的缩放效果
-        commentBoxes.forEach((box,idx) => {
-            const originalRadius = box.getAttr('originalRadius');
-            const radius = originalRadius * oldScale / newScale;
-            console.log(originalRadius);
-            
-            // 通用设置半径的方法
-            // commentBoxes[idx].radius({ x: radius, y: radius });
-        });
+        layer.draw();
 
         // 应用比例到画布
         stage.scale({ x: newScale, y: newScale });
@@ -70,13 +63,30 @@ const pages = () => {
     
 
     // 在画布中打点
+    let index = 0
+    const hhhh = (commentGroup: Konva.Group) =>{
+        const deleteGroup = commentGroup.findOne('.commentBoxText')
+
+            commentGroup.destroy();
+        layer.batchDraw();
+
+
+    }
+
+
+    
+
     stage.on('click', (e) => {
         const position = stage.getPointerPosition() || {x:0,y:0};
-        addComment(stage, layer, comments, position.x, position.y);
+        index++
+        console.log(index);
+        
+        // 绘制标注点
+        addComment(stage, layer, position.x, position.y, index);
         
     });  
 
-
+   
     
 }
 
