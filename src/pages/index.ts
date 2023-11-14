@@ -5,10 +5,6 @@ import { canvas } from "pages/canvas";
 import addComment from "@src/pages/canvas";
 
 // 定义 Comment 类型
-interface Comment {
-    box: Konva.Circle | Konva.Group;
-}
-
 const pages = () => { 
     // 渲染主结构
     template.render(canvas.index, {}, "app");
@@ -64,18 +60,6 @@ const pages = () => {
 
     // 在画布中打点
     let index = 0
-    const hhhh = (commentGroup: Konva.Group) =>{
-        const deleteGroup = commentGroup.findOne('.commentBoxText')
-
-            commentGroup.destroy();
-        layer.batchDraw();
-
-
-    }
-
-
-    
-
     stage.on('click', (e) => {
         const position = stage.getPointerPosition() || {x:0,y:0};
         index++
@@ -84,7 +68,7 @@ const pages = () => {
         // 绘制标注点
         addComment(stage, layer, position.x, position.y, index);
         
-    });  
+    });         
 
    
     
