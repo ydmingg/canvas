@@ -22,8 +22,9 @@ const pages = () => {
         width: w,
         height: h,
     });
-
     const layer = new Konva.Layer();
+    
+
     stage.add(layer);
 
     // 监听画布是否缩放
@@ -50,6 +51,7 @@ const pages = () => {
             x: pointer.x - newPos.x * newScale,
             y: pointer.y - newPos.y * newScale,
         });
+
 
         // 刷新画布&图层
         layer.batchDraw();

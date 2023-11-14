@@ -51,7 +51,7 @@ const commentBox = (stage: Konva.Stage, layer: Konva.Layer, x: number, y: number
 
   // 更新图层
   layer.add(commentGroup);
-  layer.batchDraw();
+  layer.batchDraw(); // 更新图层
 
   // 标注点缩放缓动
   const tween = new Konva.Tween({
@@ -63,14 +63,13 @@ const commentBox = (stage: Konva.Stage, layer: Konva.Layer, x: number, y: number
   });
   commentGroup.on('mouseover touchstart', ()=> {
     stage.container().style.cursor = 'pointer';
-    tween.play()
+    tween.play(); // 启动动画
   })
   commentGroup.on('mouseout touchend', ()=> {
     stage.container().style.cursor = "default";
-    tween.reverse();
+    tween.reverse(); //暂停动画
   });
 
-  // 返回评论框组对象，以便在外部可以继续操作
   return commentGroup;
   
 }
