@@ -42,7 +42,7 @@ export const pagesLabel = () => {
   })
 
   const tagText = new Konva.Text({
-    text: "吃了么!",
+    text: "每天一句，吃了么!",
     fontSize: 18,
     padding: 15,
     fill: "#fff"
