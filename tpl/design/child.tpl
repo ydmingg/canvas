@@ -1,0 +1,1 @@
+<div class="shapes-item" draggable="true"><i class="iconfont {{icon}}"></i><label>{{ name }}</label></div>

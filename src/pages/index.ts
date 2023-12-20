@@ -1,8 +1,7 @@
 import template from "template";
 import Konva from "konva";
 import { canvas } from "pages/canvas";
-// import Canvas from "@src/pages/canvas/index";
-import addComment from "@src/pages/canvas";
+import addComment from "@src/pages/canvas/index";
 
 // 定义 Comment 类型
 const pages = () => { 
@@ -14,7 +13,7 @@ const pages = () => {
     let w = window.innerWidth
     let h = window.innerHeight
     oCanvas.style.backgroundImage = "url('https://book.funxdata.com//public/img/showroom/bodybg.png')";
-    
+    oCanvas.style.backgroundSize = "cover"
     
     // 使用示例
     const stage = new Konva.Stage({
