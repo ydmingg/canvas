@@ -6,7 +6,7 @@ export const pagesPreview = () => {
     // 渲染DOM
     const oApp = document.querySelector("#app") as HTMLDivElement;
     template.nodeRender(tplExample.index, {}, oApp)
-    let windowDom = '<div id="preview" class="bg-gray-400" style="position:absolute;top:20px;right:20px;"></div>'
+    let windowDom = '<div id="preview" class="bg-gray-400 border-radius-sm" style="position:absolute;top:40px;right:40px;"></div>'
     let oCanvas = oApp.querySelector(".index") as HTMLDivElement;
     template.nodeAfterbeginRender(windowDom, {}, oCanvas)
 
