@@ -11,11 +11,6 @@ export const pagesHome = () => {
   template.nodeRender(tplHome.index, {}, oApp)
   //创建数组对象
   const data = [
-    // {
-    //   title: '项目实战',
-    //   path: '/advanced',
-    //   coverUrl: 'http://192.168.5.235:8060/src/assets/0.png',
-    // },
     {
       title: '矩形【rect】',
       path: '/1-rect',
@@ -66,56 +61,61 @@ export const pagesHome = () => {
       path: '/10-label',
       coverUrl: 'http://192.168.5.235:8060/src/assets/10.png',
     },
-    // {
-    //   title: '多边形【regularPolygon】',
-    //   path: '/11-regularPolygon',
-    //   coverUrl: 'http://192.168.5.235:8060/src/assets/11.png',
-    // },
-    // {
-    //   title: '箭头【arrow】',
-    //   path: '/12-arrow',
-    //   coverUrl: 'http://192.168.5.235:8060/src/assets/12.png',
-    // },
-    // {
-    //   title: '图片【image】',
-    //   path: '/13-image',
-    //   coverUrl: 'http://192.168.5.235:8060/src/assets/13.png',
-    // },
-    // {
-    //   title: '动画【animation】',
-    //   path: '/14-animation',
-    //   coverUrl: 'http://192.168.5.235:8060/src/assets/14.png',
-    // },
-    // {
-    //   title: '展示隐藏【show Hide】',
-    //   path: '/15-showHide',
-    //   coverUrl: 'http://192.168.5.235:8060/src/assets/15.png',
-    // },
-    // {
-    //   title: '键盘事件【keyEvents】',
-    //   path: '/16-keyEvents',
-    //   coverUrl: 'http://192.168.5.235:8060/src/assets/16.png',
-    // },
-    // {
-    //   title: '组【group】',
-    //   path: '/17-group',
-    //   coverUrl: 'http://192.168.5.235:8060/src/assets/17.png',
-    // },
-    // {
-    //   title: '变压器、框选【transformer】',
-    //   path: '/18-transformer',
-    //   coverUrl: 'http://192.168.5.235:8060/src/assets/18.png',
-    // },
-    // {
-    //   title: '画布滚动缩放【wheel】',
-    //   path: '/19-wheel',
-    //   coverUrl: 'http://192.168.5.235:8060/src/assets/19.png',
-    // },
-    // {
-    //   title: '窗口预览【preview】',
-    //   path: '/20-preview',
-    //   coverUrl: 'http://192.168.5.235:8060/src/assets/20.png',
-    // }
+    {
+      title: '多边形【regularPolygon】',
+      path: '/11-regularPolygon',
+      coverUrl: 'http://192.168.5.235:8060/src/assets/11.png',
+    },
+    {
+      title: '箭头【arrow】',
+      path: '/12-arrow',
+      coverUrl: 'http://192.168.5.235:8060/src/assets/12.png',
+    },
+    {
+      title: '图片【image】',
+      path: '/13-image',
+      coverUrl: 'http://192.168.5.235:8060/src/assets/13.png',
+    },
+    {
+      title: '动画【animation】',
+      path: '/14-animation',
+      coverUrl: 'http://192.168.5.235:8060/src/assets/14.png',
+    },
+    {
+      title: '展示隐藏【show Hide】',
+      path: '/15-showHide',
+      coverUrl: 'http://192.168.5.235:8060/src/assets/15.png',
+    },
+    {
+      title: '键盘事件【keyEvents】',
+      path: '/16-keyEvents',
+      coverUrl: 'http://192.168.5.235:8060/src/assets/16.png',
+    },
+    {
+      title: '组【group】',
+      path: '/17-group',
+      coverUrl: 'http://192.168.5.235:8060/src/assets/17.png',
+    },
+    {
+      title: '变压器、框选【transformer】',
+      path: '/18-transformer',
+      coverUrl: 'http://192.168.5.235:8060/src/assets/18.png',
+    },
+    {
+      title: '画布滚动缩放【wheel】',
+      path: '/19-wheel',
+      coverUrl: 'http://192.168.5.235:8060/src/assets/19.png',
+    },
+    {
+      title: '窗口预览【preview】',
+      path: '/20-preview',
+      coverUrl: 'http://192.168.5.235:8060/src/assets/20.png',
+    },
+    {
+      title: '项目实战',
+      path: '/advanced/index',
+      coverUrl: 'http://192.168.5.235:8060/src/assets/0.png',
+    },
   ]
   // 渲染列表
   const oList = oApp.querySelector('[fxtag="list"]') as HTMLElement

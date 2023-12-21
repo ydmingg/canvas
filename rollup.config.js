@@ -95,7 +95,8 @@ if (isProduction) {
                 // open: true,
                 contentBase: './',
             }),
-            livereload()
+            
+            // livereload()
         ]
         // 加入插件数组
     plugins.push(...extraPlugins)
