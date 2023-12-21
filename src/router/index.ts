@@ -12,31 +12,34 @@ import { pagesArc } from 'src/components/9-arc'
 import { pagesLabel } from 'src/components/10-label'
 
 declare let window: any
-let router = new HistoryRouter()
 
-window.Route = router;
+export const pages = () => { 
+    let router = new HistoryRouter()
 
-const routerArr = [
-    { path: '/', fun: pagesHome },
-    { path: '/1-rect', fun: pagesRect },
-    { path: '/2-circle', fun: pagesCircle },
-    { path: '/3-ellipse', fun: pagesEllipse },
-    { path: '/4-wedge', fun: pagesWedge },
-    { path: '/5-line', fun: pagesLine },
-    { path: '/6-text', fun: pagesText },
-    { path: '/7-star', fun: pagesStar },
-    { path: '/8-ring', fun: pagesRing },
-    { path: '/9-arc', fun: pagesArc },
-    { path: '/10-label', fun: pagesLabel },
-    
-]
+    window.Route = router;
 
-// 渲染页面
-for (let i = 0; i < routerArr.length; i++) {
-    router.bind(routerArr[i].path, async ()=>{ 
-        routerArr[i].fun();
-    })
+    const routerArr = [
+        { path: '/', fun: pagesHome },
+        { path: '/1-rect', fun: pagesRect },
+        { path: '/2-circle', fun: pagesCircle },
+        { path: '/3-ellipse', fun: pagesEllipse },
+        { path: '/4-wedge', fun: pagesWedge },
+        { path: '/5-line', fun: pagesLine },
+        { path: '/6-text', fun: pagesText },
+        { path: '/7-star', fun: pagesStar },
+        { path: '/8-ring', fun: pagesRing },
+        { path: '/9-arc', fun: pagesArc },
+        { path: '/10-label', fun: pagesLabel },
+        
+    ]
+
+    // 渲染页面
+    for (let i = 0; i < routerArr.length; i++) {
+        router.bind(routerArr[i].path, async ()=>{ 
+            routerArr[i].fun();
+        })
+    }
+
+    // 初始化路由
+    router.Init();
 }
-
-// 初始化路由
-router.Init();

@@ -1,8 +1,9 @@
 import home from './pages/index'
 import { pagesHome } from './components/index'
-import KonvaJS from './views/rect';
-import { design } from 'pages/design';
-import 'src/router/index'
+import KonvaJS from './views/rect'
+import { design } from 'pages/design'
+import { pages } from 'src/router/index'
+
 // 加载主内容（）
 // home();
 
@@ -23,3 +24,6 @@ import 'src/router/index'
 
 // 初始化页面
 // ComponentIndexDom()
+
+// 加载主模块
+pages()
