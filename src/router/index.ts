@@ -57,9 +57,9 @@ export const pages = () => {
 
     // 渲染页面
     for (let i = 0; i < routerArr.length; i++) {
-        // router.bind(routerArr[i].path, async ()=>{ 
-        //     routerArr[i].fun();
-        // })
+        router.bind(routerArr[i].path, async ()=>{ 
+            routerArr[i].fun();
+        })
     }
 
     // 初始化路由
