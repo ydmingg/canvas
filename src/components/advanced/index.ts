@@ -64,8 +64,9 @@ export const pagesAdvanced = () => {
     shadowColor: data_rect.boxShadow.color,
     shadowBlur: data_rect.boxShadow.blurRadius,
     shadowOffset: { x: data_rect.boxShadow.offsetX, y: data_rect.boxShadow.offsetY },
-    opacity:data_rect.opacity,
+    opacity: data_rect.opacity,
     
+
   })
   
   layer.add(rect)
