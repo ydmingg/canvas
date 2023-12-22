@@ -27,7 +27,7 @@ declare let window: any
 export const pages = () => { 
     let router = new HistoryRouter()
 
-    // window.Route = router;
+    window.Route = router;
 
     const routerArr = [
         { path: '/', fun: pagesHome },
