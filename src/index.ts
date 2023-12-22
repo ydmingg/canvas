@@ -5,7 +5,7 @@ import { design } from 'pages/design'
 import { pages } from 'src/router/index'
 
 // 加载主内容（）
-home();
+// home();
 
 // 加载评论（创建。。。）
 // comment.creat();
@@ -26,4 +26,4 @@ home();
 // ComponentIndexDom()
 
 // 加载主模块
-// pages()
+pages()
