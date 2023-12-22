@@ -1,6 +1,8 @@
 import Konva from "konva";
 import template from "template";
 import { tplExample } from "pages/tplExample";
+import { shapesRect } from "./init";
+
 
 export const pagesAdvanced = () => {
   // 渲染DOM
@@ -49,27 +51,30 @@ export const pagesAdvanced = () => {
 
   }
 
+  console.log(shapesRect);
+  
   // 渲染rect形状
-  let rect = new Konva.Rect({
-    id: data_rect.id,
-    title: data_rect.title,
-    x: data_rect.x,
-    y: data_rect.y,
-    width: data_rect.width,
-    height: data_rect.height,
-    fill: data_rect.background,
-    strokeWidth: data_rect.border.width,
-    stroke: data_rect.border.color,
-    cornerRadius: data_rect.borderRadius,
-    shadowColor: data_rect.boxShadow.color,
-    shadowBlur: data_rect.boxShadow.blurRadius,
-    shadowOffset: { x: data_rect.boxShadow.offsetX, y: data_rect.boxShadow.offsetY },
-    opacity: data_rect.opacity,
+  // let rect = new Konva.Rect({
+  //   id: data_rect.id,
+  //   title: data_rect.title,
+  //   x: data_rect.x,
+  //   y: data_rect.y,
+  //   width: data_rect.width,
+  //   height: data_rect.height,
+  //   fill: data_rect.background,
+  //   strokeWidth: data_rect.border.width,
+  //   stroke: data_rect.border.color,
+  //   cornerRadius: data_rect.borderRadius,
+  //   shadowColor: data_rect.boxShadow.color,
+  //   shadowBlur: data_rect.boxShadow.blurRadius,
+  //   shadowOffset: { x: data_rect.boxShadow.offsetX, y: data_rect.boxShadow.offsetY },
+  //   opacity: data_rect.opacity,
     
 
-  })
+  // })
   
-  layer.add(rect)
+  // layer.add(rect)
   
   
 }
+
