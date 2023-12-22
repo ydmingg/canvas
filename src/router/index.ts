@@ -25,9 +25,9 @@ import { pagesAdvanced } from 'src/components/advanced/index'
 declare let window: any
 
 export const pages = () => { 
-    let router = new HistoryRouter()
+    // let router = new HistoryRouter()
 
-    window.Route = router;
+    // window.Route = router;
 
     const routerArr = [
         { path: '/', fun: pagesHome },
@@ -57,9 +57,9 @@ export const pages = () => {
 
     // 渲染页面
     for (let i = 0; i < routerArr.length; i++) {
-        router.bind(routerArr[i].path, async ()=>{ 
-            routerArr[i].fun();
-        })
+        // router.bind(routerArr[i].path, async ()=>{ 
+        //     routerArr[i].fun();
+        // })
     }
 
     // 初始化路由
