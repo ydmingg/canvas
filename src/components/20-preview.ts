@@ -28,7 +28,7 @@ export const pagesPreview = () => {
     })
 
     stage.add(layer)
-
+    // 矩形1
     const rect1 = new Konva.Rect({
         id: "rect1",
         name: "rect",
@@ -43,7 +43,7 @@ export const pagesPreview = () => {
         strokeScaleEnabled: false,
     })
     layer.add(rect1)
-
+    // 矩形2
     const rect2 = new Konva.Rect({
         id: "rect2",
         name: "rect",
@@ -58,7 +58,7 @@ export const pagesPreview = () => {
         strokeScaleEnabled: false,
     })
     layer.add(rect2)
-
+    // 选框矩形
     const selectionRect = new Konva.Rect({
         fill: "rgba(0,0,255,0.1)",
         visible: false,
@@ -67,19 +67,20 @@ export const pagesPreview = () => {
     })
     layer.add(selectionRect)
     layer.add(tr)
-
+    // 变化事件
     stage.on("click tap", (e) => {
         const dom = e.target
         if (dom.getType() === "Shape") {
-        tr.nodes([dom])
+            tr.nodes([dom])
         } else {
-        tr.nodes([])
+            tr.nodes([])
         }
     })
     let x1 = 0, y1 = 0, x2 = 0, y2 = 0
+    // 开始创建框选
     stage.on("mousedown touchstart", (e) => {
         if (e.target !== stage) {
-        return
+            return
         }
         e.evt.preventDefault()
         const { x, y } = stage.getRelativePointerPosition() as Konva.Vector2d
@@ -94,36 +95,38 @@ export const pagesPreview = () => {
 
     stage.on("mousemove touchmove", (e) => {
         if (!selectionRect.visible()) {
-        return
+            return
         }
         const { x, y } = stage?.getRelativePointerPosition() as Konva.Vector2d
         x2 = x
         y2 = y
         selectionRect.setAttrs({
-        x: Math.min(x1, x2),
-        y: Math.min(y1, y2),
-        width: Math.abs(x1 - x2),
-        height: Math.abs(y1 - y2)
+            x: Math.min(x1, x2),
+            y: Math.min(y1, y2),
+            width: Math.abs(x1 - x2),
+            height: Math.abs(y1 - y2)
         })
     })
 
     stage.on("mouseup touchend", (e) => {
         if (!stage) {
-        return
+            return
         }
         if (!selectionRect.visible()) {
-        return
+            return
         }
         setTimeout(() => {
-        selectionRect.visible(false)
+            selectionRect.visible(false)
         })
         const shapes = stage.find(".rect")
         const box = selectionRect.getClientRect()
         let selected = shapes.filter((shape) =>
-        Konva.Util.haveIntersection(box, shape.getClientRect())
+            Konva.Util.haveIntersection(box, shape.getClientRect())
         )
         tr.nodes(selected)
     })
+    
+    // 创建低配版预览框
     const SCALE_BY = 1.1
     stage.on("wheel", (e) => {
         if (!stage) {
@@ -132,18 +135,18 @@ export const pagesPreview = () => {
         const oldScale = stage.scaleX()
         const pointer = stage.getPointerPosition() as Konva.Vector2d
         const mousePointTo = {
-        x: (pointer.x - stage.x()) / oldScale,
-        y: (pointer.y - stage.y()) / oldScale
+            x: (pointer.x - stage.x()) / oldScale,
+            y: (pointer.y - stage.y()) / oldScale
         }
         let direction = e.evt.deltaY > 0 ? -1 : 1
         if (e.evt.ctrlKey) {
-        direction = -direction
+            direction = -direction
         }
         const newScale = direction > 0 ? oldScale * SCALE_BY : oldScale / SCALE_BY
         stage.scale({ x: newScale, y: newScale })
         const newPos = {
-        x: pointer.x - mousePointTo.x * newScale,
-        y: pointer.y - mousePointTo.y * newScale
+            x: pointer.x - mousePointTo.x * newScale,
+            y: pointer.y - mousePointTo.y * newScale
         }
         stage.position(newPos)
     })

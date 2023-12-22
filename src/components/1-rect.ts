@@ -29,6 +29,7 @@ export const pagesRect = () => {
     const height = 200// 高
     const x = clientWidth / 2 - width / 2 //使图形x轴居中显示
     const y = clientHeight / 2 - height / 2//使图形y轴居中显示
+
     const rect = new Konva.Rect({
       x: x,
       y: y,
