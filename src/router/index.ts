@@ -25,7 +25,7 @@ import { pagesAdvanced } from 'src/components/advanced/index'
 declare let window: any
 
 export const pages = () => { 
-    // let router = new HistoryRouter()
+    let router = new HistoryRouter()
 
     // window.Route = router;
 
