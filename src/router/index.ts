@@ -63,8 +63,7 @@ export const pages = () => {
     }
 
     // 初始化路由
-    // router.Init();
-    pagesRect();
+    router.Init();
 
 }
 
