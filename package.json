@@ -1,6 +1,6 @@
 {
 	"name": "canvas",
-	"version": "1.12.222",
+	"version": "1.12.2601",
 	"description": "",
 	"main": "index.js",
 	"type": "module",
@@ -27,7 +27,8 @@
 		"rollup-plugin-serve": "^2.0.2",
 		"rollup-plugin-typescript2": "^0.34.1",
 		"template": "git+ssh://git@gitee.com:funxd/template.git",
-		"typescript": "^5.0.4"
+		"typescript": "^5.0.4",
+		"ui-canvas": "git+ssh://git@gitee.com:funxd/ui-canvas.git"
 	},
 	"dependencies": {
 		"konva": "^9.2.1"

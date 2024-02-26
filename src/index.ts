@@ -1,29 +1,21 @@
-import home from './pages/index'
-import { pagesHome } from './components/index'
-import KonvaJS from './views/rect'
-import { design } from 'pages/design'
-import { pages } from 'src/router/index'
-
-// 加载主内容（）
-// home();
-
-// 加载评论（创建。。。）
-// comment.creat();
-// Comments.drawFunc(123)
-
-// import * as base  from '@src/pages/canvas/base'
-// base.index();
+import template from "template";
+import { aside } from "../pages/aside";
+import { CanvasRender } from "ui-canvas";
+import canvasInit from "./canvas/index";
+import canvasEvent from "./event/index";
 
 
-// 测试
-// template.render(design.index, {}, "app")
-// let oCanvas = document.querySelector('[fxtag="body"]') as HTMLDivElement;
-// let addBtn = document.querySelector('[fxtag="add"]') as HTMLDivElement;
-// const stage = new KonvaJS(oCanvas)
+// 渲染主框架
+template.render(aside.index, {}, "app");
+
+const el = document.querySelector('[fxtag="content"]') as HTMLDivElement;
+const { clientWidth, clientHeight } = el
+const canvas = new CanvasRender(el, clientWidth, clientHeight);
 
 
-// 初始化页面
-// ComponentIndexDom()
+// 渲染canvas
+canvasInit(canvas);
 
-// 加载主模块
-pages()
+
+// 事件
+canvasEvent(canvas);
