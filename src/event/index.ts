@@ -12,11 +12,11 @@ const init = (canvas: CanvasRender) => {
     })
 
     // 缩放比例
-    // console.log();
-    
     window.addEventListener('load', (e) => { 
         sizeBtn.innerHTML = Math.round(canvas.scale * 100) + "%";
     })
+
+    //
 
 
 
