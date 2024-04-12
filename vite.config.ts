@@ -20,7 +20,7 @@ export default defineConfig({
         }
     },
     server: {
-        port: 8056, // 设置开发服务器端口
+        port: 8077, // 设置开发服务器端口
         host: "192.168.5.235", // 主机IP地址
     },
     resolve: {
