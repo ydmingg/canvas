@@ -1,36 +1,17 @@
 {
-	"name": "canvas",
-	"version": "2.2.2601",
-	"description": "",
-	"main": "index.js",
+	"name": "ui-canvas",
+	"version": "2.4.1201",
 	"type": "module",
 	"scripts": {
-		"dev": "rimraf dist && rollup -c -w --environment NODE_ENV:development",
-		"build": "rimraf dist && rollup -c --environment NODE_ENV:production",
-		"tpl": "rm -rf pages && mkdir pages && ./fxtpl pack ./tpl ./pages"
+		"dev": "vite",
+		"build": "tsc && vite build"
 	},
-	"author": "",
-	"license": "ISC",
 	"devDependencies": {
-		"@rollup/plugin-alias": "^5.0.0",
-		"@rollup/plugin-babel": "^6.0.3",
-		"@rollup/plugin-commonjs": "^25.0.0",
-		"@rollup/plugin-json": "^6.0.0",
-		"@rollup/plugin-node-resolve": "^15.0.2",
-		"@rollup/plugin-replace": "^5.0.2",
-		"@rollup/plugin-terser": "^0.4.1",
 		"@types/node": "^20.1.4",
-		"fx-route": "git+ssh://git@gitee.com:funxd/fxrute.git",
-		"rimraf": "^5.0.0",
-		"rollup-plugin-livereload": "^2.0.5",
-		"rollup-plugin-postcss": "^4.0.2",
-		"rollup-plugin-serve": "^2.0.2",
-		"rollup-plugin-typescript2": "^0.34.1",
-		"template": "git+ssh://git@gitee.com:funxd/template.git",
 		"typescript": "^5.0.4",
-		"ui-canvas": "git+ssh://git@gitee.com:funxd/ui-canvas.git"
+		"vite": "^5.2.6"
 	},
 	"dependencies": {
-		"konva": "^9.2.1"
+		"konva": "^9.3.6"
 	}
 }
