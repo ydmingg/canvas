@@ -3,24 +3,25 @@
  * 
 */
 export default interface CanvasStyle {
-    x: number;                    // X轴坐标
-    y: number;                    // Y轴坐标
-    width: number;               // 可选: 元素的宽度
-    height: number;              // 可选: 元素的高度
-    background: string;          // 可选: 元素的填充颜色
-    draggable: boolean;          // 可选: 指示元素是否可拖动
-    title: string;               // 可选: 与元素关联的标题或标签
-    imageSrc: string;            // 可选: 图像元素的源URL
-    radius: number;              // 可选: 圆形元素（例如，圆形、点）的半径
+    x?: number;                    // X轴坐标
+    y?: number;                    // Y轴坐标
+    width?: number;               // 可选: 元素的宽度
+    height?: number;              // 可选: 元素的高度
+    background?: string;          // 可选: 元素的填充颜色
+    draggable?: boolean;          // 可选: 指示元素是否可拖动
+    title?: string;               // 可选: 与元素关联的标题或标签
+    name?: string;                // 可选: 与元素关联的名称
+    imageSrc?: string;            // 可选: 图像元素的源URL
+    radius?: number;              // 可选: 圆形元素（例如，圆形、点）的半径
 
     // 形状其他属性
-    scaleX: number;              // 可选: X轴缩放因子
-    scaleY: number;              // 可选: Y轴缩放因子
+    scaleX?: number;              // 可选: X轴缩放因子
+    scaleY?: number;              // 可选: Y轴缩放因子
     // rotation: number;            // 可选: 旋转角度（度数）
     // opacity: number;             // 可选: 不透明度值（0到1）
     // visible: boolean;            // 可选: 元素是否可见
-    borderSize: number;         // 可选: 描边的宽度
-    borderColor: string;              // 可选: 描边颜色
+    borderSize?: number;         // 可选: 描边的宽度
+    borderColor?: string;              // 可选: 描边颜色
     // strokeScaleEnabled: boolean; // 可选: 启用或禁用描边缩放
 
     // // 特定形状的属性

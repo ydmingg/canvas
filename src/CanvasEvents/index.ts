@@ -1,7 +1,7 @@
 // 事件方法
-import EventHandlers from "./EventHandlers";
+import Events from "./Events";
 // 其他方法
-import OtherMethods from "./OtherMethods";
+import Others from "./others";
 
 
-export { EventHandlers,OtherMethods }
+export { Events,Others }
