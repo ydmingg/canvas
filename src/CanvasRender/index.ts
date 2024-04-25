@@ -1,7 +1,8 @@
 import Konva from "konva";
 import CanvasType from "../CanvasType/index";
-import { ObjectImage } from '../CanvasObject'
+import { ObjectImage,ObjectMark } from '../CanvasObject'
 import { Events,Others } from "../CanvasEvents";
+import CanvasMark from "../CanvasMark";
 
 
 export class CanvasRender { 
@@ -13,20 +14,16 @@ export class CanvasRender {
     stage: Konva.Stage | null
     layer: Konva.Layer
     group: Konva.Group
-    image: CanvasImageSource | undefined
     resizeTimer: any = null  // 刷新页面定时器
     moveStatus: boolean = false // 设置画布移动状态
 
-    // docMouseMove:(e: any) => void
-    // curLayout: any = { zoom: 1, offsetX: 0, offsetY: 0 } // 当前布局
     startDragPosition: { x: number; y: number } | null = null; // 存储初始拖动位置
     startStagePosition: { x: number; y: number } | null = null; // 存储初始阶段位置
+    mouseStagePosition: { x: number; y: number } | null = null; // 存储鼠标在舞台中的位置
     pinchStartDistance: number | null = null
     shapeAttrs: any[] = [] 
-    scaleBool:boolean = false
-
-
-
+    scaleBool: boolean = false
+    
     constructor(app: HTMLDivElement, width: number, height: number) { 
         this.app = app    
         this.width = width
@@ -37,24 +34,8 @@ export class CanvasRender {
         this.layer = this.newLayer()
         this.group = this.newGroup({ x: 0, y: 0 })
         this.init()
-
-        // this.docMouseMove = (e) => {
-        //     let { x, y } = this.app.getBoundingClientRect()
-        //     x = e.clientX - x
-        //     y = e.clientY - y
-        //     let point = this.pointMapping({ x, y })
-        //     // let event: any = { x, y }
-        //     // if (e.target) event.origin = { target: e.target }
-        //     // event.buttons = e.buttons
-        //     // event.spaceKey = this.moveStatus
-        //     Others.startDrag1(e,this)
-        // }
-        // this.app.addEventListener('mousemove', this.docMouseMove)
         
     }
-    
-    
-
 
     // 初始化配置
     init() { 
@@ -81,45 +62,48 @@ export class CanvasRender {
         this.stage.on('mousedown touchstart', (e) => Events.mouseDown(e, this))
         this.stage.on('mousemove touchmove', (e) => Events.mouseMove(e, this));
         this.stage.on('mouseup touchend', () => Events.mouseUp(this))
-        this.stage.on('click tap', (e) => Events.mouseClick(e,this))
+        this.stage.on('click tap', (e) => CanvasMark.markClick(e,this))
         
         // 键盘事件
-        window.addEventListener('resize', (e) => Events.Resize(this))
         window.addEventListener('keydown', (e) => Events.KeyDown(e, this))
         window.addEventListener('keyup', (e) => Events.Keyup(e, this))
+        window.addEventListener('contextmenu', (e)=> {
+            e.preventDefault();
+        });
+
+        // 
     }
 
-    /** 计算相对底图的坐标点位 */
-    // pointMapping(point) {
-    //     // 新的点位
-    //     let newPoint = { x: 0, y: 0 }
-        
-    //     // 还原偏移缩放
-    //     newPoint.x = (point.x - this.curLayout.offsetX) / this.curLayout.zoom
-    //     newPoint.y = (point.y - this.curLayout.offsetY) / this.curLayout.zoom
-    //     // 返回
-    //     return newPoint
 
-    // }
-
-    
 
     // 渲染图片
     async Component_View(shapeType: CanvasType) { 
-        if (!shapeType.style.imageSrc) return;
+        if (!shapeType.params.imageSrc) return;
         
-        let image = await this.asyncLoadImage(shapeType.style.imageSrc) as CanvasImageSource
+        let image = await this.asyncLoadImage(shapeType.params.imageSrc)
         // this.image.element = image;
         // this.image.width = image.width;
-        // this.image.height = image.height;
-        this.image = image        
-        const img = new ObjectImage(shapeType, this)
+        // this.image.height = image.height;   
+        const Img = new ObjectImage(shapeType, this, image);
         // this.shapeAttrs = shapeType
         // console.log(shapeType);
-        this.shapeAttrs.push(img.image.attrs)        
+        this.shapeAttrs.push({
+            attrs: Img.image.attrs,
+            element: Img.image
+        })
         
-        return img;
+        return Img;
     }
+    // 标注
+    async Component_Comment(shapeType: CanvasType) { 
+        const Mark = new ObjectMark(shapeType, this);
+        this.shapeAttrs.push({
+            attrs: Mark.mark.attrs,
+            element: Mark.mark
+        })
+
+    }
+
     asyncLoadImage(url: string) { 
         return new Promise((resolve, reject) => {
             var image = new Image();
@@ -137,35 +121,77 @@ export class CanvasRender {
         // 加载事件方法
         this.initEvents()
         Events.StageAutoSize(this)
-        
+
+        // 重新绘制舞台
+        this.stage?.batchDraw();
+
     }
+
 
     // 
     startDrag(startX: number, startY: number) { Others.startDrag(startX, startY, this) }
     appMoving(mouseX: number, mouseY: number) { Others.appMoving(mouseX, mouseY, this) }
     appEndDrag() { Others.appEndDrag(this) }
+    deleteElements(id:string) { Others.deleteElements(id,this) }
 
     //
     newStage(data: Konva.StageConfig) { return new Konva.Stage(data) }
     newLayer() { return new Konva.Layer() }
     newGroup(data: Konva.NodeConfig) { return new Konva.Group(data) }
     newRect(data: Konva.NodeConfig) { return new Konva.Rect(data) }
+    newCircle(data: Konva.NodeConfig) { return new Konva.Circle(data) }
+    newText(data: Konva.NodeConfig) { return new Konva.Text(data)}
     newImage(data: Konva.ImageConfig) { return new Konva.Image(data) }
     
     // 缩放画布
-    scaleStage(num:number) { 
+    scaleStage(num: number) { 
         this.scaleBool = true
-        this.scale = num
-        Events.StageAutoSize(this)
+        if (!this.stage) return;
+    
+        // 计算新的缩放比例
+        const newScale = this.stage.scaleX() * num;
+        this.scale = newScale
+        
+        // 确保缩放在最小和最大值之间
+        if (newScale < this.scale_by.min || newScale > this.scale_by.max) return;
+
+        // 设置舞台缩放比例
+        this.stage.scale({ x: newScale, y: newScale });
+        const allElements = this.stage.getClientRect({ relativeTo: this.stage });
+
+        const stageWidth = this.width; 
+        const stageHeight = this.height; 
+        // 计算元素总体积和偏移量
+        const totalWidth = allElements.width;
+        const totalHeight = allElements.height;
+        const offsetX = allElements.x;
+        const offsetY = allElements.y;
+        const scaledOffsetX = offsetX * newScale;
+        const scaledOffsetY = offsetY * newScale;
+
+        
+        // 计算偏移量，并在缩放后将元素居中
+        const offsetXDiff = (stageWidth - totalWidth * newScale) / 2 - scaledOffsetX;
+        const offsetYDiff = (stageHeight - totalHeight * newScale) / 2 - scaledOffsetY;
+        this.stage.position({ x: offsetXDiff, y: offsetYDiff });
+        
+
+        // 重新绘制舞台
+        this.stage.batchDraw();
     }
+
+    
 
     // 重绘
     resize() { 
         if (!this.stage) return;
         this.init();
         this.initEvents()
+        Events.StageAutoSize(this)
         this.stage.draw();
-
     }
+
+    
+     
 
 }

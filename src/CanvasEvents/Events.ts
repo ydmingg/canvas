@@ -6,71 +6,71 @@ import { Others } from "../CanvasEvents";
 function StageAutoSize(render: CanvasRender) { 
     if (!render.stage) return;
     // 获取舞台上所有元素的总边界框（即包含所有元素的最小矩形区域）
-    const allElements = render.stage.getClientRect();
+    const stagePadding = 20
+    const stageWidth = render.width - stagePadding*2; 
+    const stageHeight = render.height - stagePadding*2; 
+    const allElements = render.stage.getClientRect({ relativeTo: render.stage });
+    // 计算元素总体积和偏移量
+    const totalWidth = allElements.width;
+    const totalHeight = allElements.height;
+    const offsetX = allElements.x;
+    const offsetY = allElements.y;
     
     // 初始化缩放比例为预设值或当前已有的缩放比例
     let scaleBy = render.scale;
-    if (render.scale <= render.scale_by.min) {
-        render.scale = render.scale_by.min
-    } else if (render.scale >= render.scale_by.max) { 
-        render.scale = render.scale_by.max
+    if (scaleBy<= render.scale_by.min || render.scale >= render.scale_by.max) return;
+
+    // 检查元素总体积是否超过了舞台的宽度或高度
+    if (!render.scaleBool && (allElements.width > render.stage.width() || allElements.height > render.stage.height())) {
+        // 计算新的缩放比例，使得元素能在不超出舞台尺寸的情况下尽可能大地显示，同时留出20像素的边距
+        scaleBy = Math.min(
+            // 计算水平方向的缩放因子
+            (render.stage.width() - 20) / allElements.width,
+            // 计算垂直方向的缩放因子
+            (render.stage.height() - 20) / allElements.height
+        );
+
+        // 计算水平和垂直方向上的缩放比例
+        const scaleX = stageWidth / totalWidth;
+        const scaleY = stageHeight / totalHeight;
+
+        // 取较小的缩放比例作为最终的缩放比例
+        scaleBy = Math.min(scaleX, scaleY);
     }
-
-    // 设置自动缩放开关开关
-    if (!render.scaleBool) { 
-        // 检查元素总体积是否超过了舞台的宽度或高度
-        if (allElements.width > render.stage.width() || allElements.height > render.stage.height()) {
-            // 计算新的缩放比例，使得元素能在不超出舞台尺寸的情况下尽可能大地显示，同时留出20像素的边距
-            scaleBy = Math.min(
-                // 计算水平方向的缩放因子
-                (render.stage.width() - 20) / allElements.width,
-                // 计算垂直方向的缩放因子
-                (render.stage.height() - 20) / allElements.height
-            );
-            console.log(1111);
-            
-            
-        }
-    }
-
-    // 获取元素总边界框相对于舞台的偏移量
-    const offset = {
-        x: allElements.x,
-        y: allElements.y 
-    };
-    // 根据新计算的缩放比例以及原边界框大小和偏移量，计算缩放后元素的新边界框尺寸
-    const allElementsWidth = Math.round((allElements.width + offset.x) * scaleBy);
-    const allElementsHeight = Math.round((allElements.height + offset.y) * scaleBy);
-    // 将舞台的中心点设置为容器窗口中心，确保内容居中
-    render.stage.x((render.stage.width() - allElementsWidth) / 2);
-    render.stage.y((render.stage.height() - allElementsHeight) / 2);
-    // 应用新的缩放比例到整个舞台
-    render.stage.scale({ x: scaleBy, y: scaleBy });
-    // 强制舞台重绘，应用所有更改
-    // render.stage.batchDraw();
-    // 更新渲染器内部记录的全局缩放比例
-    render.scale = scaleBy;
-    render.stage.scale({x:scaleBy,y:scaleBy})
-    // render.handleCommentSize();
-    render.stage.visible(true)
-    render.stage.batchDraw();
-
-}
-
-// 处理窗口大小动态调整Canvas渲染区域以及其中内容的大小，
-function Resize(render: CanvasRender) { 
     
-    if (!render.stage) return;
-    const appWidth = render.app.clientWidth;
-    const appHeight = render.app.clientHeight;
 
-    render.stage.setSize({ width: appWidth, height: appHeight });
-    render.width = appWidth
-    render.height = appHeight
+    // 设置舞台缩放比例
+    render.scaleStage(scaleBy);
 
-    StageAutoSize(render);
+    // 计算缩放后元素的偏移量
+    const scaledOffsetX = offsetX * scaleBy - stagePadding;
+    const scaledOffsetY = offsetY * scaleBy - stagePadding;
+
+    
+    // 计算偏移量，并在缩放后将元素居中
+    const offsetXDiff = (stageWidth - totalWidth * scaleBy) / 2 - scaledOffsetX;
+    const offsetYDiff = (stageHeight - totalHeight * scaleBy) / 2 - scaledOffsetY;
+    render.stage.position({ x: offsetXDiff, y: offsetYDiff });
+
+    
+    const stageBackground = new Konva.Rect({
+        x: allElements.x, // 设置矩形左上角的 X 坐标为 0，使其紧贴舞台左侧边缘
+        y: allElements.y, // 设置矩形左上角的 Y 坐标为 0，使其紧贴舞台顶部边缘
+        width: allElements.width, // 设置矩形宽度与舞台宽度相同
+        height: allElements.height, // 设置矩形高度与舞台高度相同
+        fill: 'rgba(0, 0, 0, .5)', // 设置背景颜色，这里使用白色（您可以根据需要更改颜色和透明度）
+    });
+    render.layer.add(stageBackground);
+    stageBackground.moveToBottom();
+
+
+    render.stage.visible(true)
+
+    // 更新缩放属性
+    render.scale = scaleBy;
 
     render.stage.batchDraw();
+    
 
 }
 
@@ -184,11 +184,11 @@ function mouseDown(event: any, render: CanvasRender) {
 // // 处理全局鼠标移动事件
 function mouseMove(event: any, render: CanvasRender) {
     if (!render.stage) return;
-    if (render.moveStatus) { render.app.style.cursor="grab" }
+    if (render.moveStatus) { render.app.style.cursor = "grab" }
+    
     // 检查当前是否有鼠标左键(1)或中键(4)按下，并且canvasRender对象中的isSpacePressed属性为true.
     if (event.evt.buttons === 1 && render.moveStatus || event.evt.buttons === 4) {
         // 调用canvasRender对象的handleDrag方法，传入鼠标当前位置在页面上的横纵坐标（clientX, clientY）
-        
         render.appMoving(event.evt.clientX, event.evt.clientY);
         
     }
@@ -250,13 +250,36 @@ function mouseUp(render: CanvasRender) {
 }
 
 function mouseClick(event: any, render: CanvasRender) { 
-    if (!render.stage) return;
-    const canvasDom = event.target
+    // if (!render.stage) return;
+    // const canvasDom = event.target
+    
+    // // 获取舞台的缩放比例
+    // const stageScale = render.stage.scaleX(); // 假设舞台的水平和垂直方向的缩放比例相同
+    
+    // // 获取鼠标单击的坐标
+    // const mouseX = event.evt.clientX - render.app.getBoundingClientRect().left; // 鼠标在页面中的横坐标
+    // const mouseY = event.evt.clientY - render.app.getBoundingClientRect().top; // 鼠标在页面中的纵坐标
+    // // console.log(render.app.getBoundingClientRect());
+
+    // const allElements = render.stage.getClientRect({ relativeTo: render.stage });
+    // // 计算鼠标单击的真实坐标（缩放前）
+    // const realXBefore = mouseX - render.stage.x()
+    // const realYBefore = mouseY - render.stage.y()
+
+    // // 处理缩放后的坐标
+    // const realXAfter = event.evt.clientX 
+    // const realYAfter = event.evt.clientY
     
     
-    // console.log(canvasDom.attrs);
     
+
+    // // 打印出结果
+    // console.log("相对窗口坐标：", realXAfter, realYAfter);
+    // console.log("相对画布坐标：", realXBefore, realYBefore, stageScale,render.stage.x());
 }
+    
+    
+
 
 
 // // 处理Konva画布的点击事件
@@ -385,7 +408,6 @@ function mouseClick(event: any, render: CanvasRender) {
 
 export default {
     StageAutoSize,
-    Resize,
     Wheel,
     KeyDown,
     Keyup,

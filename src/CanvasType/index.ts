@@ -4,5 +4,6 @@ export default interface CanvasType {
     id: string;
     type: string;
     title?: string;
-    style: style;
+    params: style;
+    element?: any; 
 }

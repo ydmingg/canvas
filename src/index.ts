@@ -7,6 +7,7 @@ const { clientWidth, clientHeight } = app
 // 实例化CanvasRender
 const canvas = new CanvasRender(app, clientWidth, clientHeight);
 
+// const src1 = "https://book.funxdata.com/public/img/showroom/3d.png"
 const src1 = "https://book.funxdata.com/public/applogo/ai.png"
 const src2 = "https://book.funxdata.com/public/applogo/psd.png"
 
@@ -65,50 +66,77 @@ let data = [
         id: "01",
         type: "Component_View",
         // title: '图片',
-        style: {
+        params: {
             imageSrc: src1,
             draggable: true,
             
         }
     },
     {
-        id: "03",
+        id: "02",
         type: "Component_View",
         // title: '图片',
-        style: {
+        params: {
             imageSrc: src2,
             x: 200,
             y: 200
         }
     },
+    {
+        id: "010",
+        type: "Component_Comment",
+        // title: "标注图形",
+        params: {
+            x: 40,
+            y: 40
+        }
+    },
+    {
+        id: "010",
+        type: "Component_Comment",
+        // title: "标注图形",
+        params: {
+            x: 120,
+            y: 120
+        }
+    }
     
 ]
 
 
-canvas.render(data)
 
-// canvas.scale = 0.1
-// canvas.moveStatus = true
-// console.log(canvas.stage?.scale());
-// document.addEventListener('click', () => { 
 
-//     canvas.scaleStage(0.5)
+canvas.render(data).then(() => { 
+        // canvas.scale = .2
+    // console.log(canvas.scale);
+    xx.innerHTML = Math.round(canvas.scale * 100) + "%"
+    canvas.deleteElements('02')
     
     
+})
 
+canvas.app.addEventListener('click', () => { 
+    console.log(canvas.mouseStagePosition);
+})
+
+
+
+
+let xx = document.querySelector("#popout") as HTMLDivElement
+
+
+
+// 缩放舞台方法
+// canvas.scaleStage(.2)
+// Render.then(()=>{
+//     // canvas.scale = .2
+//     // console.log(canvas.scale);
+//     xx.innerHTML = Math.round(canvas.scale * 100) + "%"
+//     canvas.deleteElements('02')
+    
 // })
 
-
-// 初始化
-// window.onresize = () => { 
-//     canvas.onresize()
-// }
-
-
-
-
-
-// console.log(canvas);
+// console.log(canvas.scale);
 
 
 
@@ -119,44 +147,20 @@ canvas.render(data)
 
 
 
-// canvas.render(imgData)
 
 
-// canvas.deleteElements("01")
+// canvas.scale = 2
 
-// 设置图片初始值
-// async function mapToLoadElement(url) { 
-//     let image = await asyncLoadImage(url)
-//     console.log(image);
+
+// window.addEventListener('click', () => {
+//     scale -= 0.1
     
-// }
-
-
-// // 创建图片
-// function asyncLoadImage(url) { 
-//     return new Promise((resolve, reject) => { 
-//         let image = new Image();
-//         image.src = url
-//         image.onload = () => resolve(image)
-//         image.onerror = ()=>reject(new Error("图片地址错误！"))
+//     canvas.scaleStage(scale)
     
-//     })
-// }
+// })
 
-// // 异步加载
-// async function start(url) { 
-//     await mapToLoadElement(url)
-    
-// }
-
-
-// // 传入地址
-// start(src1);
-
-
-
-
-
+// const scales = canvas.getScale();
+// console.log(scales);
 
 
 
@@ -535,193 +539,3 @@ canvas.render(data)
 
 // canvas.render(data)
 
-
-
-
-
-
-
-
-
-
-
-
-
-// const DEFAULT_SET = {
-//     stage: {
-//         obj: null,
-//         width: 0,
-//         height: 0,
-//         scale: 1,
-//     },
-//     layer: {
-//         obj: null,
-//         width: 0,
-//         height: 0,
-//         x: 0,
-//         y: 0,
-//     },
-//     group: {
-//         obj: null,
-//         width: 0,
-//         height: 0,
-//         scaleX: 1,
-//         scaleY: 1,
-//     },
-//     image: {
-//         obj: null,
-//         element: null,
-//         width: 0,
-//         height: 0,
-//     },
-// }
-
-
-
-// const cloneOf = (obj: any) => {
-//     return JSON.parse(JSON.stringify(obj));
-// }
-
-// export class CanvasRender {
-//     el: HTMLDivElement; 
-//     width: number;
-//     height: number;
-//     stage: any = {};
-//     layer: any = {};
-//     group: any = {};
-//     image: any = {};
-
-    
-
-//     constructor( el: HTMLDivElement,width:number,height:number ) {
-//         // 初始化CanvasRender实例
-//         this.el = el
-//         this.width = width
-//         this.height = height
-        
-//     }
-
-//     initStage() { 
-//         this.stage = cloneOf(DEFAULT_SET.stage)
-//         this.layer = cloneOf(DEFAULT_SET.layer)
-//         this.group = cloneOf(DEFAULT_SET.group)
-//         this.image = cloneOf(DEFAULT_SET.image)
-//     }
-
-//     // 初始化stage
-//     mapToStage() { 
-//         let stage = new Konva.Stage({
-//             container: this.el,
-//             width: this.width,
-//             height: this.height,
-//             scaleX: 1,
-//             scaleY: 1,
-    
-//         })
-
-//         this.stage.obj = stage
-//         this.stage.width = this.width
-//         this.stage.height = this.height
-        
-        
-//         this.stage.scale = 1
-        
-//     }
-//     // 初始化layer
-//     mapToLayer() { 
-//         let { obj:stage } = this.stage
-//         let layer = new Konva.Layer()
-
-//         stage.add(layer)
-//         this.layer.obj = layer
-//     }
-//     // 初始化Group
-//     mapToGroup() { 
-//         let { obj:layer } = this.layer
-//         let group = new Konva.Group({
-//             width:100,
-//             height:100,
-//         })
-//         layer.add(group)
-//         this.group.width = 300
-//         this.group.height = 300
-//         this.group.obj = group
-
-//     }
-//     // 初始化图片
-//     mapToShapeImage() { 
-//         let { element } = this.image
-//         let { width, height } = this.group
-        
-        
-//         let image = new Konva.Image({
-//             image: element,
-//             width: width,
-//             height: height,
-//             draggable: true,
-//         });
-        
-//         this.group.obj.add(image);
-//         this.image.obj = image;
-//         // console.log(this.image.obj);
-
-//     }
-//     // 
-//     async initImage(url:string) { 
-//         let image: any = await this.asyncLoadImage(url)
-//         this.image.element = image;
-//         this.image.width = image.width;
-//         this.image.height = image.height;
-        
-
-//     }
-//     asyncLoadImage(url: string) { 
-//         return new Promise((resolve, reject) => {
-//             var image = new Image();
-//             image.src = url;
-            
-//             image.onload = () => resolve(image)
-//             image.onerror = () => reject(new Error('图片地址错误！！！'))
-            
-//         });
-//     }
-      
-
-//     async start(url) { 
-//         this.initStage()
-//         await this.initImage(url)
-//         this.mapToStage()
-//         this.mapToLayer()
-//         this.mapToGroup()
-//         this.mapToShapeImage()
-
-//         console.log(this.layer);
-        
-//     }
-
-
-//     render(data:CanvasType[]) { 
-//         let shapes;
-//         data.forEach((item:CanvasType) => { 
-//             if (item.type === "Component_View") { 
-                
-                
-//             }
-//         })
-//     }
-
-
-//     // async render(data:CanvasType[]) { 
-//     //     // data.forEach((item: CanvasType) => { 
-//     //     //     this.start(item.style.imageSrc)
-//     //     // })
-//     //     for (const item of data) {
-//     //         await this.start(item.style.imageSrc);
-
-            
-//     //     }
-    
-        
-//     // }
-    
-// }

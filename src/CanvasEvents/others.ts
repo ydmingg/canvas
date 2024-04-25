@@ -142,20 +142,20 @@ function appEndDrag(render: CanvasRender) {
 // //     canvasRender.spaceArr = canvasRender.spaceArr.filter((item) => item.params.type !== elementTypeName);
 // // }
 
-// // 删除元素
-// function deleteElements(elementId: string, canvasRender: CanvasRender) {     
-//     // 获取页面上的所有元素
-//     const commentsNode = canvasRender.spaceArr.filter((item) => item.params.id === elementId);
+// 删除元素
+function deleteElements(Id: string, render: CanvasRender) {     
+    // 获取页面上的所有元素
+    const commentsNode = render.shapeAttrs.filter((item) => item.attrs.id === Id);
     
-//     // 遍历找到的元素，并从舞台上移除它们
-//     commentsNode.forEach(({ shape }) => { 
-//         shape.destroy();
-//     })
-    
-    
+    // 遍历找到的元素，并从舞台上移除它们
+    commentsNode.forEach(({ element }) => { 
+        element.destroy();
+    })
     
     
-// }
+    
+    
+}
 
 
 
@@ -167,5 +167,6 @@ export default {
     startDrag,
     appMoving,
     appEndDrag,
+    deleteElements,
 }
 

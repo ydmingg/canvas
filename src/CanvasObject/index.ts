@@ -1,7 +1,4 @@
-import newComment from './newComment'
-import newView from './newView'
-
 import ObjectImage from './image'
+import ObjectMark from './mark'
 
-
-export { newComment, newView,ObjectImage }
+export { ObjectImage, ObjectMark }
