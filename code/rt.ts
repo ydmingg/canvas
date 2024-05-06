@@ -1,19 +1,19 @@
-export const rt = (canvas,render) => { 
+export const rt = (canvas, render) => { 
+    const popout = document.querySelector(".scale") as HTMLInputElement
+
+    // 显示缩放比例
     render.then(() => { 
-        const popout = document.querySelector(".scale") as HTMLInputElement
         popout.value = Math.round(canvas.scale * 100) + "%"
         // canvas.deleteElements('02')
-    
-        // 缩放舞台方法
-        // canvas.scaleStage(.2)
-        // Render.then(()=>{
-        //     // canvas.scale = .2
-        //     // console.log(canvas.scale);
-        //     xx.innerHTML = Math.round(canvas.scale * 100) + "%"
-        //     canvas.deleteElements('02')
-            
-        // })
 
-        // console.log(canvas.scale);
+         // 缩放舞台方法
+        popout.addEventListener('change', () => { 
+            console.log(parseInt(popout.value)/100);
+            
+            canvas.scaleStage(parseInt(popout.value)/100)
+
+        })
     })
+    
+
 }

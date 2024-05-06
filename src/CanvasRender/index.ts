@@ -165,8 +165,8 @@ export class CanvasRender {
         if (!this.stage) return;
     
         // 计算新的缩放比例
-        const newScale = this.stage.scaleX() * num;
-        this.scale = newScale
+        const newScale =  num;
+        this.scale = num
         
         // 确保缩放在最小和最大值之间
         if (newScale < this.scale_by.min || newScale > this.scale_by.max) return;
