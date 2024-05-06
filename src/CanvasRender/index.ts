@@ -22,7 +22,9 @@ export class CanvasRender {
     mouseStagePosition: { x: number; y: number } | null = null; // 存储鼠标在舞台中的位置
     pinchStartDistance: number | null = null
     shapeAttrs: any[] = [] 
-    scaleBool: boolean = false
+    scaleBool: boolean = false //手动控制舞台放大缩小
+
+    img:any
     
     constructor(app: HTMLDivElement, width: number, height: number) { 
         this.app = app    
@@ -67,9 +69,7 @@ export class CanvasRender {
         // 键盘事件
         window.addEventListener('keydown', (e) => Events.KeyDown(e, this))
         window.addEventListener('keyup', (e) => Events.Keyup(e, this))
-        window.addEventListener('contextmenu', (e)=> {
-            e.preventDefault();
-        });
+    
 
         // 
     }
@@ -79,14 +79,13 @@ export class CanvasRender {
     // 渲染图片
     async Component_View(shapeType: CanvasType) { 
         if (!shapeType.params.imageSrc) return;
-        
-        let image = await this.asyncLoadImage(shapeType.params.imageSrc)
+        const image = await this.asyncLoadImage(shapeType.params.imageSrc)
         // this.image.element = image;
         // this.image.width = image.width;
         // this.image.height = image.height;   
         const Img = new ObjectImage(shapeType, this, image);
-        // this.shapeAttrs = shapeType
-        // console.log(shapeType);
+        // // this.shapeAttrs = shapeType
+        // // console.log(shapeType);
         this.shapeAttrs.push({
             attrs: Img.image.attrs,
             element: Img.image
@@ -94,8 +93,10 @@ export class CanvasRender {
         
         return Img;
     }
+
+
     // 标注
-    async Component_Comment(shapeType: CanvasType) { 
+    Component_Comment(shapeType: CanvasType) { 
         const Mark = new ObjectMark(shapeType, this);
         this.shapeAttrs.push({
             attrs: Mark.mark.attrs,
@@ -113,11 +114,26 @@ export class CanvasRender {
             
         });
     }
+
+
+
+
+    loadImage(url) { 
+        return new Promise((resolve)=>{
+            const img = new Image();
+            img.onload = () => resolve(img);
+            img.src = url;
+        })
+    }
+    
+
+    
     // 渲染
     async render(data: CanvasType[]) { 
         for (const item of data) {
             await this[`${item.type}`](item);
         }
+
         // 加载事件方法
         this.initEvents()
         Events.StageAutoSize(this)
@@ -179,7 +195,7 @@ export class CanvasRender {
         // 重新绘制舞台
         this.stage.batchDraw();
     }
-
+    
     
 
     // 重绘

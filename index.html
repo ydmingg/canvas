@@ -9,10 +9,27 @@
     <title>Canvas</title>
     <link href="https://static.funxdata.com/release/css/css-preview232101.css" rel="stylesheet">
     <link href="https://static.funxdata.com/release/font20240321/icons.css" rel="stylesheet">
+    <style>
+        .app-data-lt,.app-data-rt{
+            width: 240px;
+            height: 100%;
+            background-color: rgba(0,0,0,.4);
+        }
+    </style>
 </head>
 
 <body>
-    <div id="app" style="background-color: skyblue;margin: auto;"></div>
+    <div id="app">
+        <div class="row h-100%">
+            <div class="app-data-lt p-20">
+                <div class="vg-input-value bg-gray-100 pages" ></div>
+            </div>
+            <div class="app-canvas h-100% flex1"></div>
+            <div class="app-data-rt p-20">
+                <input class="vg-input-value bg-gray-100 scale" type="text">
+            </div>
+        </div>
+    </div>
     <div id="popout"></div>
     <script type="module" src="./src/index.ts"></script>
 </body>
