@@ -7,7 +7,7 @@ export const rt = (canvas, render) => {
 
         // 缩放舞台
         popout.addEventListener('change', () => {
-            console.log(parseInt(popout.value) / 100);
+            console.log("舞台缩放比例为：", parseInt(popout.value) / 100);
             
             canvas.scaleStage(parseInt(popout.value) / 100)
 
