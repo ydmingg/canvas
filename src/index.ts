@@ -15,7 +15,7 @@ const src2 = "https://book.funxdata.com/public/applogo/psd.png"
 // 外部数据
 let data = [
     {
-        id: "01",
+        id: "image01",
         type: "Component_View",
         // title: '图片',
         params: {
@@ -25,7 +25,7 @@ let data = [
         }
     },
     // {
-    //     id: "02",
+    //     id: "image02",
     //     type: "Component_View",
     //     // title: '图片',
     //     params: {
@@ -35,7 +35,7 @@ let data = [
     //     }
     // },
     {
-        id: "010",
+        id: "comment01",
         type: "Component_Comment",
         // title: "标注图形",
         params: {
@@ -44,7 +44,7 @@ let data = [
         }
     },
     {
-        id: "010",
+        id: "comment02",
         type: "Component_Comment",
         // title: "标注图形",
         params: {
@@ -59,4 +59,4 @@ let data = [
 const render = canvas.render(data)
 
 // 渲染dom
-code(canvas,render);
+code(canvas, render);

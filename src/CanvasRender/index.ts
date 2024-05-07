@@ -82,6 +82,7 @@ export class CanvasRender {
         const Img = new ObjectImage(shapeType, this, image);
         // // this.shapeAttrs = shapeType
         // // console.log(shapeType);
+        
         this.shapeAttrs.push({
             attrs: Img.image.attrs,
             element: Img.image
