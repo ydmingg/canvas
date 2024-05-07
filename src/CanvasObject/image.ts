@@ -1,4 +1,5 @@
 import CanvasType from '../CanvasType'
+import { newObject } from '../CanvasObject'
 import { CanvasRender } from '../CanvasRender'
 
 // 导出舞台
@@ -8,7 +9,7 @@ export default class image {
         if (!render.stage) return;
         const allShapeImage = render.stage.find('.shapeImage')
         
-        this.image = render.newImage({
+        this.image = newObject.image({
             id: shapeType.id,
             title: `图片${allShapeImage?.length + 1}`,
             image: image,

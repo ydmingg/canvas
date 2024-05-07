@@ -1,4 +1,5 @@
 import CanvasType from '../CanvasType'
+import { newObject } from '../CanvasObject'
 import { CanvasRender } from '../CanvasRender'
 
 // 标注组件
@@ -12,7 +13,7 @@ export default class mark {
 
     // 创建标注形状
     marks(shapeType:CanvasType, render:CanvasRender) { 
-        this.mark = render.newGroup({
+        this.mark = newObject.group({
             id: shapeType.id,
             name: "mark",
             obj:this.mark,
@@ -24,7 +25,7 @@ export default class mark {
         })
 
         // 创建圆
-        const circle = render.newCircle({
+        const circle = newObject.circle({
             x: 0,
             y: 0,
             fill: 'rgba(255, 255, 0, 0.3)',
@@ -42,7 +43,7 @@ export default class mark {
 
 
         // 创建文本
-        const text = render.newText({
+        const text = newObject.text({
             text: 1,
             x: 0,
             y: 0,

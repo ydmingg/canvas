@@ -1,6 +1,6 @@
 import Konva from "konva";
 import CanvasType from "../CanvasType/index";
-import { ObjectImage,ObjectMark } from '../CanvasObject'
+import { newObject,ObjectImage,ObjectMark } from '../CanvasObject'
 import { Events,Others } from "../CanvasEvents";
 import CanvasMark from "../CanvasMark";
 
@@ -33,15 +33,15 @@ export class CanvasRender {
         this.scale = 1
         this.scale_by = { value: 1.05, min: 0.02, max: 256 }
         this.stage = null
-        this.layer = this.newLayer()
-        this.group = this.newGroup({ x: 0, y: 0 })
+        this.layer = newObject.layer()
+        this.group = newObject.group({ x: 0, y: 0 })
         this.init()
         
     }
 
     // 初始化配置
     init() { 
-        this.stage = this.newStage({
+        this.stage = newObject.stage({
             container: this.app,
             width: this.width,
             height: this.height,
@@ -50,6 +50,8 @@ export class CanvasRender {
         })
         this.layer.add(this.group)
         this.stage.add(this.layer)
+        
+        
         
     }
 
@@ -104,7 +106,7 @@ export class CanvasRender {
         })
 
     }
-
+    // 加载图片
     asyncLoadImage(url: string) { 
         return new Promise((resolve, reject) => {
             var image = new Image();
@@ -114,19 +116,6 @@ export class CanvasRender {
             
         });
     }
-
-
-
-
-    loadImage(url) { 
-        return new Promise((resolve)=>{
-            const img = new Image();
-            img.onload = () => resolve(img);
-            img.src = url;
-        })
-    }
-    
-
     
     // 渲染
     async render(data: CanvasType[]) { 
@@ -151,13 +140,7 @@ export class CanvasRender {
     deleteElements(id:string) { Others.deleteElements(id,this) }
 
     //
-    newStage(data: Konva.StageConfig) { return new Konva.Stage(data) }
-    newLayer() { return new Konva.Layer() }
-    newGroup(data: Konva.NodeConfig) { return new Konva.Group(data) }
-    newRect(data: Konva.NodeConfig) { return new Konva.Rect(data) }
-    newCircle(data: Konva.NodeConfig) { return new Konva.Circle(data) }
-    newText(data: Konva.NodeConfig) { return new Konva.Text(data)}
-    newImage(data: Konva.ImageConfig) { return new Konva.Image(data) }
+    
     
     // 缩放画布
     scaleStage(num: number) { 
@@ -207,6 +190,18 @@ export class CanvasRender {
         this.stage.draw();
     }
 
+    // 获取UUID
+    // get UUID() {
+    //     let d = Date.now()
+    //     if (typeof performance !== "undefined" && typeof performance.now === 'function') {
+    //       d += performance.now()
+    //     }
+    //     return 'xxxxxxxxxxxxxxx4xxxyxxxxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+    //       const r = (d + Math.random() * 16) % 16 | 0
+    //       d = Math.floor(d / 16)
+    //       return (c === 'x' ? r : r & 0x3 | 0x8).toString(16)
+    //     })
+    // } 
     
      
 
