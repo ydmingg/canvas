@@ -23,8 +23,6 @@ export class CanvasRender {
     pinchStartDistance: number | null = null
     shapeAttrs: any[] = [] 
     scaleBool: boolean = false //手动控制舞台放大缩小
-
-    img:any
     
     constructor(app: HTMLDivElement, width: number, height: number) { 
         this.app = app    
@@ -51,32 +49,29 @@ export class CanvasRender {
         this.layer.add(this.group)
         this.stage.add(this.layer)
         
-        
-        
-    }
-
-    // 初始化事件
-    initEvents() { 
-        if (!this.stage) return;
-        
         // 缩放事件
         this.stage.on('wheel', (e) => Events.Wheel(e, this))
-        
         // 鼠标事件
         this.stage.on('mousedown touchstart', (e) => Events.mouseDown(e, this))
         this.stage.on('mousemove touchmove', (e) => Events.mouseMove(e, this));
         this.stage.on('mouseup touchend', () => Events.mouseUp(this))
         this.stage.on('click tap', (e) => CanvasMark.markClick(e,this))
-        
         // 键盘事件
         window.addEventListener('keydown', (e) => Events.KeyDown(e, this))
         window.addEventListener('keyup', (e) => Events.Keyup(e, this))
-    
-
-        // 
+        
     }
 
-
+    // 加载图片
+    asyncLoadImage(url: string) { 
+        return new Promise((resolve, reject) => {
+            var image = new Image();
+            image.src = url;
+            image.onload = () => resolve(image);
+            image.onerror = () => reject(new Error('图片地址错误！！！'))
+            
+        });
+    }
 
     // 渲染图片
     async Component_View(shapeType: CanvasType) { 
@@ -95,8 +90,6 @@ export class CanvasRender {
         
         return Img;
     }
-
-
     // 标注
     Component_Comment(shapeType: CanvasType) { 
         const Mark = new ObjectMark(shapeType, this);
@@ -106,16 +99,6 @@ export class CanvasRender {
         })
 
     }
-    // 加载图片
-    asyncLoadImage(url: string) { 
-        return new Promise((resolve, reject) => {
-            var image = new Image();
-            image.src = url;
-            image.onload = () => resolve(image);
-            image.onerror = () => reject(new Error('图片地址错误！！！'))
-            
-        });
-    }
     
     // 渲染
     async render(data: CanvasType[]) { 
@@ -123,24 +106,15 @@ export class CanvasRender {
             await this[`${item.type}`](item);
         }
 
-        // 加载事件方法
-        this.initEvents()
         Events.StageAutoSize(this)
-
-        // 重新绘制舞台
-        this.stage?.batchDraw();
 
     }
 
-
-    // 
+    //
     startDrag(startX: number, startY: number) { Others.startDrag(startX, startY, this) }
     appMoving(mouseX: number, mouseY: number) { Others.appMoving(mouseX, mouseY, this) }
     appEndDrag() { Others.appEndDrag(this) }
     deleteElements(id:string) { Others.deleteElements(id,this) }
-
-    //
-    
     
     // 缩放画布
     scaleStage(num: number) { 
@@ -179,16 +153,15 @@ export class CanvasRender {
         this.stage.batchDraw();
     }
     
-    
 
     // 重绘
     resize() { 
         if (!this.stage) return;
         this.init();
-        this.initEvents()
         Events.StageAutoSize(this)
         this.stage.draw();
     }
+
 
     // 获取UUID
     // get UUID() {
@@ -202,7 +175,4 @@ export class CanvasRender {
     //       return (c === 'x' ? r : r & 0x3 | 0x8).toString(16)
     //     })
     // } 
-    
-     
-
 }
