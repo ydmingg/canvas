@@ -14,15 +14,14 @@ export class CanvasRender {
     stage: Konva.Stage | null
     layer: Konva.Layer
     group: Konva.Group
-    resizeTimer: any = null  // 刷新页面定时器
+    // resizeTimer: any = null  // 刷新页面定时器
     moveStatus: boolean = false // 设置画布移动状态
-
     startDragPosition: { x: number; y: number } | null = null; // 存储初始拖动位置
     startStagePosition: { x: number; y: number } | null = null; // 存储初始阶段位置
     mouseStagePosition: { x: number; y: number } | null = null; // 存储鼠标在舞台中的位置
     pinchStartDistance: number | null = null
-    shapeAttrs: any[] = [] 
-    scaleBool: boolean = false //手动控制舞台放大缩小
+    shapeAttrs: any[] = [] // 元素集合
+    scaleBool: boolean = false // 手动控制舞台放大缩小（暂设）
     
     constructor(app: HTMLDivElement, width: number, height: number) { 
         this.app = app    
@@ -110,7 +109,7 @@ export class CanvasRender {
 
     }
 
-    //
+    // 交互事件
     startDrag(startX: number, startY: number) { Others.startDrag(startX, startY, this) }
     appMoving(mouseX: number, mouseY: number) { Others.appMoving(mouseX, mouseY, this) }
     appEndDrag() { Others.appEndDrag(this) }
