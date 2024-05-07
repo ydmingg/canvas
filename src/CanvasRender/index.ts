@@ -155,13 +155,12 @@ export class CanvasRender {
     
 
     // 重绘
-    resize() { 
-        if (!this.stage) return;
-        this.init();
-        Events.StageAutoSize(this)
-        this.stage.draw();
-    }
-
+    // resize() { 
+    //     if (!this.stage) return;
+    //     this.init();
+    //     Events.StageAutoSize(this)
+    //     this.stage.draw();
+    // }
 
     // 获取UUID
     // get UUID() {
