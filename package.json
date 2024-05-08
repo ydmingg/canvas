@@ -1,6 +1,6 @@
 {
   "name": "canvas",
-  "version": "1.5.0602",
+  "version": "1.5.0603",
   "type": "module",
   "scripts": {
     "dev": "vite",

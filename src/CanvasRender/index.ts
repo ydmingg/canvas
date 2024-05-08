@@ -2,7 +2,7 @@ import Konva from "konva";
 import CanvasType from "../CanvasType/index";
 import { newObject,ObjectImage,ObjectMark } from '../CanvasObject'
 import { Events,Others } from "../CanvasEvents";
-import CanvasMark from "../CanvasMark";
+import markEvents from "../CanvasMark";
 
 
 export class CanvasRender { 
@@ -11,17 +11,20 @@ export class CanvasRender {
     height: number  //视口高度
     scale: number  //设置缩放因子
     scale_by: { value: number; min: number; max: number } //基础缩放倍数为1.05,最小0.02，最大256
-    stage: Konva.Stage | null
-    layer: Konva.Layer
-    group: Konva.Group
+    stage: Konva.Stage | null // 唯一舞台
+    layer: Konva.Layer  // 主页面
+    group: Konva.Group  // 主组
+    transformer: Konva.Transformer
     // resizeTimer: any = null  // 刷新页面定时器
-    moveStatus: boolean = false // 设置画布移动状态
+    // moveStatus: boolean = false // 设置画布移动状态
     startDragPosition: { x: number; y: number } | null = null; // 存储初始拖动位置
     startStagePosition: { x: number; y: number } | null = null; // 存储初始阶段位置
     mouseStagePosition: { x: number; y: number } | null = null; // 存储鼠标在舞台中的位置
     pinchStartDistance: number | null = null
     shapeAttrs: any[] = [] // 元素集合
-    scaleBool: boolean = false // 手动控制舞台放大缩小（暂设）
+    booleanZoom: boolean = false // 关闭舞台放大缩小（暂设）
+    booleanDrag: boolean = false // 关闭画布移动状态
+    
     
     constructor(app: HTMLDivElement, width: number, height: number) { 
         this.app = app    
@@ -32,6 +35,7 @@ export class CanvasRender {
         this.stage = null
         this.layer = newObject.layer()
         this.group = newObject.group({ x: 0, y: 0 })
+        this.transformer = newObject.transformer()
         this.init()
         
     }
@@ -54,7 +58,9 @@ export class CanvasRender {
         this.stage.on('mousedown touchstart', (e) => Events.mouseDown(e, this))
         this.stage.on('mousemove touchmove', (e) => Events.mouseMove(e, this));
         this.stage.on('mouseup touchend', () => Events.mouseUp(this))
-        this.stage.on('click tap', (e) => CanvasMark.markClick(e,this))
+        // this.stage.on('click tap', (e) => )
+        this.stage.on('contextmenu', (e) => e.evt.preventDefault())
+        
         // 键盘事件
         window.addEventListener('keydown', (e) => Events.KeyDown(e, this))
         window.addEventListener('keyup', (e) => Events.Keyup(e, this))
@@ -91,7 +97,7 @@ export class CanvasRender {
         return Img;
     }
     // 标注
-    Component_Comment(shapeType: CanvasType) { 
+    async Component_Comment(shapeType: CanvasType) { 
         const Mark = new ObjectMark(shapeType, this);
         this.shapeAttrs.push({
             attrs: Mark.mark.attrs,
@@ -105,8 +111,9 @@ export class CanvasRender {
         for (const item of data) {
             await this[`${item.type}`](item);
         }
-
+        // 自动化舞台大小
         Events.StageAutoSize(this)
+        markEvents.setSize(this)
 
     }
 
@@ -117,8 +124,8 @@ export class CanvasRender {
     deleteElements(id:string) { Others.deleteElements(id,this) }
     
     // 缩放画布
-    scaleStage(num: number) { 
-        this.scaleBool = true
+    getScale(num: number) { 
+        this.booleanZoom = true
         if (!this.stage) return;
     
         // 计算新的缩放比例

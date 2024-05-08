@@ -152,9 +152,6 @@ function deleteElements(Id: string, render: CanvasRender) {
         element.destroy();
     })
     
-    
-    
-    
 }
 
 

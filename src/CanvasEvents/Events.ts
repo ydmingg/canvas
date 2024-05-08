@@ -1,6 +1,6 @@
 import Konva from "konva";
 import { CanvasRender } from "../CanvasRender/index";
-import { Others } from "../CanvasEvents";
+import markEvents from "../CanvasMark";
 
 // 自动缩放画布
 function StageAutoSize(render: CanvasRender) { 
@@ -21,7 +21,7 @@ function StageAutoSize(render: CanvasRender) {
     if (scaleBy<= render.scale_by.min || render.scale >= render.scale_by.max) return;
 
     // 检查元素总体积是否超过了舞台的宽度或高度
-    if (!render.scaleBool && (allElements.width > render.stage.width() || allElements.height > render.stage.height())) {
+    if (!render.booleanZoom && (allElements.width > render.stage.width() || allElements.height > render.stage.height())) {
         // 计算新的缩放比例，使得元素能在不超出舞台尺寸的情况下尽可能大地显示，同时留出20像素的边距
         scaleBy = Math.min(
             // 计算水平方向的缩放因子
@@ -40,7 +40,7 @@ function StageAutoSize(render: CanvasRender) {
     
 
     // 设置舞台缩放比例
-    render.scaleStage(scaleBy);
+    render.getScale(scaleBy);
 
     // 计算缩放后元素的偏移量
     const scaledOffsetX = offsetX * scaleBy - stagePadding;
@@ -53,19 +53,19 @@ function StageAutoSize(render: CanvasRender) {
     render.stage.position({ x: offsetXDiff, y: offsetYDiff });
 
     
-    const stageBackground = new Konva.Rect({
-        x: allElements.x, // 设置矩形左上角的 X 坐标为 0，使其紧贴舞台左侧边缘
-        y: allElements.y, // 设置矩形左上角的 Y 坐标为 0，使其紧贴舞台顶部边缘
-        width: allElements.width, // 设置矩形宽度与舞台宽度相同
-        height: allElements.height, // 设置矩形高度与舞台高度相同
-        fill: 'rgba(0, 0, 0, .5)', // 设置背景颜色，这里使用白色（您可以根据需要更改颜色和透明度）
-    });
-    render.layer.add(stageBackground);
-    stageBackground.moveToBottom();
+    // const stageBackground = new Konva.Rect({
+    //     x: allElements.x, // 设置矩形左上角的 X 坐标为 0，使其紧贴舞台左侧边缘
+    //     y: allElements.y, // 设置矩形左上角的 Y 坐标为 0，使其紧贴舞台顶部边缘
+    //     width: allElements.width, // 设置矩形宽度与舞台宽度相同
+    //     height: allElements.height, // 设置矩形高度与舞台高度相同
+    //     fill: 'rgba(0, 0, 0, .5)', // 设置背景颜色，这里使用白色（您可以根据需要更改颜色和透明度）
+    // });
+    // render.layer.add(stageBackground);
+    // stageBackground.moveToBottom();
 
+   
 
     render.stage.visible(true)
-
     // 更新缩放属性
     render.scale = scaleBy;
 
@@ -75,7 +75,8 @@ function StageAutoSize(render: CanvasRender) {
 }
 
 // 处理滚轮位移事件（同时按住ctrl或者win时画布缩放）
-function Wheel(event:any, render: CanvasRender) {
+function Wheel(event: any, render: CanvasRender) {
+    if (!render.stage) return;
     const { stage } = render
     if (!stage) return;
     // 获取当前鼠标在舞台坐标系中的位置
@@ -127,12 +128,15 @@ function Wheel(event:any, render: CanvasRender) {
     }
     // // 阻止滚轮事件的默认行为
     // event.preventDefault();
+    
+    // 缩放时自动调整标注点的大小
+    markEvents.setSize(render);
 }
 
 // // 处理空格键的按下
 function KeyDown(event: KeyboardEvent, render: CanvasRender) {
     if (event.code == "Space") { 
-        render.moveStatus = true
+        render.booleanDrag = true
         render.app.style.cursor = "grab"
     }
 }
@@ -140,7 +144,7 @@ function KeyDown(event: KeyboardEvent, render: CanvasRender) {
 // 处理空格键的抬起
 function Keyup(event: KeyboardEvent, render: CanvasRender) {
     if (event.code == "Space") { 
-        render.moveStatus = false
+        render.booleanDrag = false
         render.app.style.cursor = "default"
     }
 }
@@ -155,7 +159,6 @@ function mouseDown(event: any, render: CanvasRender) {
 
     // 检查是否按下了鼠标左键(1)或中键(4)
     if (event.evt.buttons === 1 || event.evt.buttons === 4) {
-        
         // 调用canvasRender对象的handleStartDrag方法，传入鼠标点击时在页面上的横纵坐标（clientX, clientY）
         render.startDrag(event.evt.clientX, event.evt.clientY);
         // 还原鼠标指针状态
@@ -167,7 +170,7 @@ function mouseDown(event: any, render: CanvasRender) {
     if (event.evt.touches.length === 1) {
         render.startDrag(event.evt.touches[0].clientX, event.evt.touches[0].clientY);
     } else if (event.evt.touches.length === 2) { 
-        // 计算两个触摸点之间的欧几里得距离（两点间直线距离）
+        // 计算两个触摸点之间的的距离
         const distance = Math.hypot(
             event.evt.touches[0].clientX - event.evt.touches[1].clientX,
             event.evt.touches[0].clientY - event.evt.touches[1].clientY
@@ -184,10 +187,10 @@ function mouseDown(event: any, render: CanvasRender) {
 // // 处理全局鼠标移动事件
 function mouseMove(event: any, render: CanvasRender) {
     if (!render.stage) return;
-    if (render.moveStatus) { render.app.style.cursor = "grab" }
+    if (render.booleanDrag) { render.app.style.cursor = "grab" }
     
     // 检查当前是否有鼠标左键(1)或中键(4)按下，并且canvasRender对象中的isSpacePressed属性为true.
-    if (event.evt.buttons === 1 && render.moveStatus || event.evt.buttons === 4) {
+    if (event.evt.buttons === 1 && render.booleanDrag || event.evt.buttons === 4) {
         // 调用canvasRender对象的handleDrag方法，传入鼠标当前位置在页面上的横纵坐标（clientX, clientY）
         render.appMoving(event.evt.clientX, event.evt.clientY);
         
@@ -195,10 +198,12 @@ function mouseMove(event: any, render: CanvasRender) {
 
     // 处理移动端触摸事件
     if (!event.evt.touches) return;
+    // 当只有一个触摸点时，调用相应的方法进行拖拽操作
     if (event.evt.touches.length === 1) {
-        // 当只有一个触摸点时，调用相应的方法进行拖拽操作
+        // if (!render.booleanDrag) return; 
         render.appMoving(event.evt.touches[0].clientX, event.evt.touches[0].clientY);
     } else if (event.evt.touches.length === 2 && render.pinchStartDistance !== null) { 
+
         // 计算两个触摸点的中点坐标
         const midpoint = {
             x: (event.evt.touches[0].clientX + event.evt.touches[1].clientX) / 2,

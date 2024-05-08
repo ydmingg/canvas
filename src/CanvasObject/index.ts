@@ -21,6 +21,8 @@ class newObject {
 
 }
 
+// 导出组件的name
+
 
 // 导出方法
 export { newObject, ObjectImage, ObjectMark }

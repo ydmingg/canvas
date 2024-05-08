@@ -15,6 +15,7 @@ export default class mark {
     marks(shapeType:CanvasType, render:CanvasRender) { 
         this.mark = newObject.group({
             id: shapeType.id,
+            title: "标注点",
             name: "mark",
             obj:this.mark,
             x: shapeType.params.x,

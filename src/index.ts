@@ -13,7 +13,7 @@ const src1 = "https://book.funxdata.com/public/applogo/ai.png"
 const src2 = "https://book.funxdata.com/public/applogo/psd.png"
 
 // 外部数据
-let data = [
+let data1 = [
     {
         id: "image01",
         type: "Component_View",
@@ -24,16 +24,19 @@ let data = [
             
         }
     },
-    // {
-    //     id: "image02",
-    //     type: "Component_View",
-    //     // title: '图片',
-    //     params: {
-    //         imageSrc: src2,
-    //         x: 200,
-    //         y: 200
-    //     }
-    // },
+    {
+        id: "image02",
+        type: "Component_View",
+        // title: '图片',
+        params: {
+            imageSrc: src2,
+            x: 200,
+            y: 200
+        }
+    },
+]
+// 外部数据
+let data2 = [
     {
         id: "comment01",
         type: "Component_Comment",
@@ -55,8 +58,13 @@ let data = [
     
 ]
 
-// 渲染元素
+let data = [...data1,...data2]
+
+// 渲染元素（只能就行一次）
 const render = canvas.render(data)
+
+
+
 
 // 渲染dom
 code(canvas, render);
