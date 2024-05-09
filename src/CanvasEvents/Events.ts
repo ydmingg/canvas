@@ -4,12 +4,13 @@ import markEvents from "../CanvasMark";
 
 // 自动缩放画布
 function StageAutoSize(render: CanvasRender) { 
-    if (!render.stage) return;
-    // 获取舞台上所有元素的总边界框（即包含所有元素的最小矩形区域）
-    const stagePadding = 20
-    const stageWidth = render.width - stagePadding*2; 
-    const stageHeight = render.height - stagePadding*2; 
-    const allElements = render.stage.getClientRect({ relativeTo: render.stage });
+    if (!render.root_stage) return;
+    // 获取页面上所有元素的总边界框（即包含所有元素的最小矩形区域）
+    const pagePadding = 20
+    const pageWidth = render.width - pagePadding*2; 
+    const pageHeight = render.height - pagePadding*2; 
+    const allElements = render.page.getClientRect({ relativeTo: render.page });
+    
     // 计算元素总体积和偏移量
     const totalWidth = allElements.width;
     const totalHeight = allElements.height;
@@ -21,18 +22,18 @@ function StageAutoSize(render: CanvasRender) {
     if (scaleBy<= render.scale_by.min || render.scale >= render.scale_by.max) return;
 
     // 检查元素总体积是否超过了舞台的宽度或高度
-    if (!render.booleanZoom && (allElements.width > render.stage.width() || allElements.height > render.stage.height())) {
+    if (!render.booleanZoom && (allElements.width > render.page.width() || allElements.height > render.page.height())) {
         // 计算新的缩放比例，使得元素能在不超出舞台尺寸的情况下尽可能大地显示，同时留出20像素的边距
         scaleBy = Math.min(
             // 计算水平方向的缩放因子
-            (render.stage.width() - 20) / allElements.width,
+            (render.page.width() - 20) / allElements.width,
             // 计算垂直方向的缩放因子
-            (render.stage.height() - 20) / allElements.height
+            (render.page.height() - 20) / allElements.height
         );
 
         // 计算水平和垂直方向上的缩放比例
-        const scaleX = stageWidth / totalWidth;
-        const scaleY = stageHeight / totalHeight;
+        const scaleX = pageWidth / totalWidth;
+        const scaleY = pageHeight / totalHeight;
 
         // 取较小的缩放比例作为最终的缩放比例
         scaleBy = Math.min(scaleX, scaleY);
@@ -43,14 +44,14 @@ function StageAutoSize(render: CanvasRender) {
     render.getScale(scaleBy);
 
     // 计算缩放后元素的偏移量
-    const scaledOffsetX = offsetX * scaleBy - stagePadding;
-    const scaledOffsetY = offsetY * scaleBy - stagePadding;
+    const scaledOffsetX = offsetX * scaleBy - pagePadding;
+    const scaledOffsetY = offsetY * scaleBy - pagePadding;
 
     
     // 计算偏移量，并在缩放后将元素居中
-    const offsetXDiff = (stageWidth - totalWidth * scaleBy) / 2 - scaledOffsetX;
-    const offsetYDiff = (stageHeight - totalHeight * scaleBy) / 2 - scaledOffsetY;
-    render.stage.position({ x: offsetXDiff, y: offsetYDiff });
+    const offsetXDiff = (pageWidth - totalWidth * scaleBy) / 2 - scaledOffsetX;
+    const offsetYDiff = (pageHeight - totalHeight * scaleBy) / 2 - scaledOffsetY;
+    render.page.position({ x: offsetXDiff, y: offsetYDiff });
 
     
     // const stageBackground = new Konva.Rect({
@@ -60,38 +61,37 @@ function StageAutoSize(render: CanvasRender) {
     //     height: allElements.height, // 设置矩形高度与舞台高度相同
     //     fill: 'rgba(0, 0, 0, .5)', // 设置背景颜色，这里使用白色（您可以根据需要更改颜色和透明度）
     // });
-    // render.layer.add(stageBackground);
-    // stageBackground.moveToBottom();
+    // render.page.add(stageBackground);
+    // // stageBackground.moveToBottom();
 
    
 
-    render.stage.visible(true)
+    render.root_stage.visible(true)
     // 更新缩放属性
     render.scale = scaleBy;
 
-    render.stage.batchDraw();
+    render.root_stage.batchDraw();
     
 
 }
 
 // 处理滚轮位移事件（同时按住ctrl或者win时画布缩放）
 function Wheel(event: any, render: CanvasRender) {
-    if (!render.stage) return;
-    const { stage } = render
-    if (!stage) return;
+    if (!render.root_stage) return;
+    if (!render.root_stage) return;
     // 获取当前鼠标在舞台坐标系中的位置
-    const position = stage.getPointerPosition() as Konva.Vector2d
+    const position = render.root_stage.getPointerPosition() as Konva.Vector2d
     // 设置缩放步进值为10
     const step = 10
     // 根据滚轮滚动的方向设置缩放方向，向下滚动为缩小(-1)，向上滚动为放大(1)
     let direction = event.evt.deltaY > 0 ? -1 : 1;
     
     // 获取当前舞台的X轴缩放比例
-    const oldScale = stage.scaleX();
+    const oldScale = render.page.scaleX();
     // 计算鼠标点相对于未缩放舞台的位置
     const mousePointTo = {
-        x: (position.x - stage.x()) / oldScale,
-        y: (position.y - stage.y()) / oldScale
+        x: (position.x - render.page.x()) / oldScale,
+        y: (position.y - render.page.y()) / oldScale
     }
 
     // 根据滚轮滚动方向调整缩放比例，并限制在允许范围内
@@ -106,7 +106,7 @@ function Wheel(event: any, render: CanvasRender) {
     }
 
     // 滑动滚轮时，设置舞台垂直移动
-    stage.y(stage.y() + step * direction)
+    render.page.y(render.page.y() + step * direction)
     
     render.scale = oldScale
     
@@ -118,11 +118,11 @@ function Wheel(event: any, render: CanvasRender) {
         event.evt.stopPropagation();
 
         // 更新舞台的缩放比例
-        stage.scale({ x: newScale, y: newScale })
+        render.page.scale({ x: newScale, y: newScale })
         
       
         // 更新舞台的位置坐标
-        stage.position(newPosition)
+        render.page.position(newPosition)
         render.scale = newScale
         
     }
@@ -151,7 +151,7 @@ function Keyup(event: KeyboardEvent, render: CanvasRender) {
 
 // 处理全局鼠标按下事件
 function mouseDown(event: any, render: CanvasRender) {
-    if (!render.stage) return;
+    if (!render.root_stage) return;
     if (event.evt.buttons === 1) { 
         const canvasDom = event.target
 
@@ -186,7 +186,7 @@ function mouseDown(event: any, render: CanvasRender) {
 
 // // 处理全局鼠标移动事件
 function mouseMove(event: any, render: CanvasRender) {
-    if (!render.stage) return;
+    if (!render.root_stage) return;
     if (render.booleanDrag) { render.app.style.cursor = "grab" }
     
     // 检查当前是否有鼠标左键(1)或中键(4)按下，并且canvasRender对象中的isSpacePressed属性为true.
@@ -224,16 +224,16 @@ function mouseMove(event: any, render: CanvasRender) {
             // 计算缩放比例
             const scale = currentDistance / render.pinchStartDistance;
             // 获取舞台实例，并获取当前的水平缩放值
-            const oldScale = render.stage.scaleX();
+            const oldScale = render.page.scaleX();
             // 计算新的缩放值
             const newScale = oldScale * scale;
             // 计算舞台中心与当前触摸点中点之间的偏移量
-            const offsetX = render.stage.x() - midpoint.x;
-            const offsetY = render.stage.y() - midpoint.y;
+            const offsetX = render.page.x() - midpoint.x;
+            const offsetY = render.page.y() - midpoint.y;
             // 更新舞台的缩放属性
-            render.stage.scale({ x: newScale, y: newScale });
+            render.page.scale({ x: newScale, y: newScale });
             // 根据缩放比例调整舞台位置以保持视觉上的缩放中心不变
-            render.stage.position({
+            render.page.position({
                 x: midpoint.x + offsetX * scale,
                 y: midpoint.y + offsetY * scale,
             });
@@ -255,21 +255,21 @@ function mouseUp(render: CanvasRender) {
 }
 
 function mouseClick(event: any, render: CanvasRender) { 
-    // if (!render.stage) return;
+    // if (!render.root_stage) return;
     // const canvasDom = event.target
     
     // // 获取舞台的缩放比例
-    // const stageScale = render.stage.scaleX(); // 假设舞台的水平和垂直方向的缩放比例相同
+    // const stageScale = render.root_stage.scaleX(); // 假设舞台的水平和垂直方向的缩放比例相同
     
     // // 获取鼠标单击的坐标
     // const mouseX = event.evt.clientX - render.app.getBoundingClientRect().left; // 鼠标在页面中的横坐标
     // const mouseY = event.evt.clientY - render.app.getBoundingClientRect().top; // 鼠标在页面中的纵坐标
     // // console.log(render.app.getBoundingClientRect());
 
-    // const allElements = render.stage.getClientRect({ relativeTo: render.stage });
+    // const allElements = render.root_stage.getClientRect({ relativeTo: render.root_stage });
     // // 计算鼠标单击的真实坐标（缩放前）
-    // const realXBefore = mouseX - render.stage.x()
-    // const realYBefore = mouseY - render.stage.y()
+    // const realXBefore = mouseX - render.root_stage.x()
+    // const realYBefore = mouseY - render.root_stage.y()
 
     // // 处理缩放后的坐标
     // const realXAfter = event.evt.clientX 
@@ -280,7 +280,7 @@ function mouseClick(event: any, render: CanvasRender) {
 
     // // 打印出结果
     // console.log("相对窗口坐标：", realXAfter, realYAfter);
-    // console.log("相对画布坐标：", realXBefore, realYBefore, stageScale,render.stage.x());
+    // console.log("相对画布坐标：", realXBefore, realYBefore, stageScale,render.root_stage.x());
 }
     
     
@@ -291,12 +291,12 @@ function mouseClick(event: any, render: CanvasRender) {
 // function handleCanvasClick(canvasRender: CanvasRender) { 
 
 //     // 获取当前鼠标在舞台坐标系中的位置，并将其转换为Vector2d对象
-//     const position = canvasRender.stage.getPointerPosition() as Konva.Vector2d
+//     const position = canvasrender.root_stage.getPointerPosition() as Konva.Vector2d
 //     // 获取当前舞台的X轴缩放比例
-//     const scale = canvasRender.stage.scaleX();
+//     const scale = canvasrender.root_stage.scaleX();
 //     // 根据当前鼠标位置和舞台缩放比例计算出相对于未缩放画布的点击坐标
-//     canvasRender.x = Math.round((position.x - canvasRender.stage.x()) / scale);
-//     canvasRender.y = Math.round((position.y - canvasRender.stage.y()) / scale);
+//     canvasRender.x = Math.round((position.x - canvasrender.root_stage.x()) / scale);
+//     canvasRender.y = Math.round((position.y - canvasrender.root_stage.y()) / scale);
 //     // 如果检测到空格键被按下或当前点击不是针对注释（isCommentClickBool为false），则直接返回，不执行后续操作
 //     // if (canvasRender.isSpacePressed || !canvasRender.isCommentClickBool) return;
 //     // 否则，设置canvasRender中表示画布被点击的标志位为true
@@ -351,7 +351,7 @@ function mouseClick(event: any, render: CanvasRender) {
 //             // 计算缩放比例
 //             const scale = currentDistance / canvasRender.pinchStartDistance;
 //             // 获取舞台实例，并获取当前的水平缩放值
-//             const stage = canvasRender.stage;
+//             const stage = canvasrender.root_stage;
 //             const oldScale = stage.scaleX();
 //             // 计算新的缩放值
 //             const newScale = oldScale * scale;
@@ -401,12 +401,12 @@ function mouseClick(event: any, render: CanvasRender) {
 //     // 如果空格键未被按下，则直接返回，不执行后续操作
 //     if (!canvasRender.isSpacePressed) return;
 //     // 获取当前鼠标指针在舞台坐标系中的位置，并将其转换为Konva.Vector2d对象
-//     const position = canvasRender.stage.getPointerPosition() as Konva.Vector2d;
+//     const position = canvasrender.root_stage.getPointerPosition() as Konva.Vector2d;
 //     // 获取当前画布的X轴缩放比例
-//     const scale = canvasRender.stage.scaleX();
+//     const scale = canvasrender.root_stage.scaleX();
 //     // 计算点击点相对于未缩放画布的真实坐标，并进行四舍五入取整
-//     canvasRender.x = Math.round((position.x - canvasRender.stage.x()) / scale);
-//     canvasRender.y = Math.round((position.y - canvasRender.stage.y()) / scale);
+//     canvasRender.x = Math.round((position.x - canvasrender.root_stage.x()) / scale);
+//     canvasRender.y = Math.round((position.y - canvasrender.root_stage.y()) / scale);
 //     // 设置表示画布已被点击的标志位为true
 //     canvasRender.isCanvasClickFlag = true;
 // }

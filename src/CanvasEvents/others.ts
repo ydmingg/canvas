@@ -3,29 +3,29 @@ import { CanvasRender } from "../CanvasRender/index";
 
 // 记录舞台拖拽时的位置坐标
 function startDrag(startX: number, startY: number, render: CanvasRender) {
-    if (!render.stage) return;
+    if (!render.root_stage) return;
     // 将当前鼠标或触摸点按下时的坐标（startX, startY）存储为上次拖拽的位置信息。
     render.startDragPosition = { x: startX, y: startY };
     
     // 获取当前画布在全局坐标系统中的位置x和y，并将其存储为上一次舞台位置信息。
     render.startStagePosition = {
-        x: render.stage.x(),
-        y: render.stage.y()
+        x: render.page.x(),
+        y: render.page.y()
     };
 }
 
 
 //处理在拖拽操作进行时被调用以处理鼠标或触摸点的移动事件。
 function appMoving(mouseX: number, mouseY: number, render: CanvasRender) { 
-    if (!render.stage) return;
+    if (!render.root_stage) return;
     // 如果上次拖拽的位置信息不存在，则直接返回（意味着还没有开始拖拽或者已经清理了状态）。
     if(!render.startDragPosition || !render.startStagePosition) return
     // 根据当前鼠标或触摸点坐标与上一次拖拽结束时的位置计算水平和垂直方向上的位移量。
     const deltaX = mouseX - render.startDragPosition.x;
     const deltaY = mouseY - render.startDragPosition.y;
     // 使用计算出的位移量更新画布（舞台）在全局坐标系统中的位置。
-    render.stage.x(render.startStagePosition.x + deltaX);
-    render.stage.y(render.startStagePosition.y + deltaY);
+    render.page.x(render.startStagePosition.x + deltaX);
+    render.page.y(render.startStagePosition.y + deltaY);
 }
 
 // 处理在拖拽操作结束时被调用以重置相关状态。
@@ -66,13 +66,13 @@ function appEndDrag(render: CanvasRender) {
 //         //     // });
 //         //     // point.on('mouseover touchstart', () => {
 //         //     //     canvasRender.isCanvasComment = true
-//         //     //     canvasRender.stage.container().style.cursor = 'pointer';
+//         //     //     canvasrender.root_stage.container().style.cursor = 'pointer';
 //         //     //     point.children[0].attrs.fill = "yellow";
 //         //     //     tween.play(); // 启动动画
 //         //     // })
 //         //     // point.on('mouseout touchend', () => {
 //         //     //     canvasRender.isCanvasComment = false
-//         //     //     canvasRender.stage.container().style.cursor = "default";
+//         //     //     canvasrender.root_stage.container().style.cursor = "default";
 //         //     //     point.children[0].attrs.fill = pointStartFill
 //         //     //     tween.reverse(); //暂停动画
 //         //     // });
@@ -84,18 +84,18 @@ function appEndDrag(render: CanvasRender) {
 // // 处理捏合缩放手势
 // function handlePinchZoom(scale: number, canvasRender: CanvasRender) {
 //     // 获取当前舞台X轴缩放比例，并乘以传入的缩放因子
-//     const newScale = canvasRender.stage.scaleX() * scale;
+//     const newScale = canvasrender.root_stage.scaleX() * scale;
 //     // 定义允许的最小和最大缩放值
 //     const minScale = 0.02;
 //     const maxScale = 256;
 //     // 将新的缩放比例限制在允许范围内
 //     const clampedScale = Math.min(maxScale, Math.max(minScale, newScale));
 //     // 更新画布舞台的X轴和Y轴缩放到经过约束的新缩放比例
-//     canvasRender.stage.scale({ x: clampedScale, y: clampedScale });
+//     canvasrender.root_stage.scale({ x: clampedScale, y: clampedScale });
 //     // 清除之前存储的捏合开始时的距离信息，表明本次缩放动作已完成
 //     canvasRender.pinchStartDistance = null;
 //     // 刷新画布舞台，应用缩放变化
-//     canvasRender.stage.batchDraw();
+//     canvasrender.root_stage.batchDraw();
 //     // 更新canvasRender对象中记录的当前缩放比例值
 //     canvasRender.scale = clampedScale;
 //     // 调用handleCommentSize方法，可能用于处理与缩放相关的注释或其他元素尺寸调整

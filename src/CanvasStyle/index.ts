@@ -2,7 +2,7 @@
  * 表示Canvas中图形的属性类型
  * 
 */
-export default interface CanvasStyle {
+export interface CanvasStyle {
     x?: number;                    // X轴坐标
     y?: number;                    // Y轴坐标
     width?: number;               // 可选: 元素的宽度

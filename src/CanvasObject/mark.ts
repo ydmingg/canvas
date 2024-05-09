@@ -1,18 +1,18 @@
-import CanvasType from '../CanvasType'
+import { CanvasComponentsMap } from '../CanvasType'
 import { newObject } from '../CanvasObject'
 import { CanvasRender } from '../CanvasRender'
 
 // 标注组件
 export default class mark { 
     mark: any
-    constructor(shapeType:CanvasType,render:CanvasRender) { 
-        this.marks(shapeType, render)
-        
-        render.group.add(this.mark)
+    constructor(shapeType:CanvasComponentsMap,render:CanvasRender) { 
+        this.setMark(shapeType, render)
+        // 创建标注的组
+        render.page.add(this.mark)
     }
 
     // 创建标注形状
-    marks(shapeType:CanvasType, render:CanvasRender) { 
+    setMark(shapeType:CanvasComponentsMap, render:CanvasRender) { 
         this.mark = newObject.group({
             id: shapeType.id,
             title: "标注点",
@@ -72,6 +72,6 @@ export default class mark {
         
         
     }
-
+    
 
 }

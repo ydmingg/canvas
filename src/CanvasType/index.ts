@@ -1,9 +1,20 @@
-import style from '../CanvasStyle'
+import { CanvasStyle } from '../CanvasStyle'
 
-export default interface CanvasType { 
+export type CanvasComponentsType =
+    "canvas"|
+    "board" |
+    "image" |
+    "rect" |
+    "circle" |
+    "text" |
+    "mark" |
+    ""
+    ;
+
+export interface CanvasComponentsMap { 
     id: string;
     type: string;
     title?: string;
-    params: style;
+    params: CanvasStyle;
     element?: any; 
 }

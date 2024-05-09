@@ -1,13 +1,13 @@
-import CanvasType from '../CanvasType'
+import { CanvasComponentsMap } from '../CanvasType'
 import { newObject } from '../CanvasObject'
 import { CanvasRender } from '../CanvasRender'
 
 // 导出舞台
 export default class image { 
     image:any
-    constructor(shapeType: CanvasType, render: CanvasRender,image:any) {
-        if (!render.stage) return;
-        const allShapeImage = render.stage.find('.shapeImage')
+    constructor(shapeType: CanvasComponentsMap, render: CanvasRender,image:any) {
+        if (!render.root_stage) return;
+        const allShapeImage = render.root_stage.find('.shapeImage')
         
         this.image = newObject.image({
             id: shapeType.id,
@@ -26,7 +26,8 @@ export default class image {
 
         })
 
-        render.group.add(this.image)
+        render.page.add(this.image)
+        
 
 
 

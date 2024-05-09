@@ -4,7 +4,7 @@ import { ObjectMark } from '../CanvasObject'
 
 export default class markEvents { 
     static setSize(render: CanvasRender) { 
-        if (!render.stage) return;
+        if (!render.root_stage) return;
         // 获取标注点的大小
         
         const markSize = {
@@ -12,7 +12,7 @@ export default class markEvents {
             scaleY: 1 / render.scale,
         }
         // 获取所有的mark
-        const arrMark = render.stage.find(".mark")
+        const arrMark = render.root_stage.find(".mark")
         arrMark.forEach((e) => { 
             e.setAttrs({ 
                 scaleX: markSize.scaleX,
@@ -26,17 +26,17 @@ export default class markEvents {
     
         
         // 获取舞台的缩放比例
-        // const stageScale = render.stage.scaleX(); // 假设舞台的水平和垂直方向的缩放比例相同
+        // const stageScale = render.root_stage.scaleX(); // 假设舞台的水平和垂直方向的缩放比例相同
         
         // // 获取鼠标单击的坐标
         // const mouseX = event.evt.clientX - render.app.getBoundingClientRect().left; // 鼠标在页面中的横坐标
         // const mouseY = event.evt.clientY - render.app.getBoundingClientRect().top; // 鼠标在页面中的纵坐标
         // // console.log(render.app.getBoundingClientRect());
     
-        // const allElements = render.stage.getClientRect({ relativeTo: render.stage });
+        // const allElements = render.root_stage.getClientRect({ relativeTo: render.root_stage });
         // // 计算鼠标单击的真实坐标（缩放前）
-        // const realXBefore = Math.round(mouseX - render.stage.x())
-        // const realYBefore = Math.round(mouseY - render.stage.y())
+        // const realXBefore = Math.round(mouseX - render.root_stage.x())
+        // const realYBefore = Math.round(mouseY - render.root_stage.y())
         
         // render.mouseStagePosition  = {
         //     x: realXBefore,
@@ -93,13 +93,13 @@ export default class markEvents {
         //     //     // });
         //     //     // point.on('mouseover touchstart', () => {
         //     //     //     canvasRender.isCanvasComment = true
-        //     //     //     canvasRender.stage.container().style.cursor = 'pointer';
+        //     //     //     canvasrender.root_stage.container().style.cursor = 'pointer';
         //     //     //     point.children[0].attrs.fill = "yellow";
         //     //     //     tween.play(); // 启动动画
         //     //     // })
         //     //     // point.on('mouseout touchend', () => {
         //     //     //     canvasRender.isCanvasComment = false
-        //     //     //     canvasRender.stage.container().style.cursor = "default";
+        //     //     //     canvasrender.root_stage.container().style.cursor = "default";
         //     //     //     point.children[0].attrs.fill = pointStartFill
         //     //     //     tween.reverse(); //暂停动画
         //     //     // });
@@ -108,6 +108,7 @@ export default class markEvents {
         // })
     }
     static moveClick() { 
+        console.log("被点了");
         
     }
 }
