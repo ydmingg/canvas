@@ -13,7 +13,7 @@ export default class image {
             id: shapeType.id,
             title: `图片${allShapeImage?.length + 1}`,
             image: image,
-            name:shapeType.name?shapeType.name:"image",
+            name:"image",
             x: shapeType.x,
             y: shapeType.y,
             width: shapeType.width?shapeType.width:image.width,
@@ -25,14 +25,9 @@ export default class image {
             strokeWidth: shapeType.style.borderSize,
 
         })
-
-        render.page.add(this.image)
         
-
-
-
+        render.pageContent.add(this.image)
         
-
         
         
     }

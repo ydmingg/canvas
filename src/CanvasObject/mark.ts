@@ -6,13 +6,6 @@ import { CanvasRender } from '../CanvasRender'
 export default class mark { 
     mark: any
     constructor(shapeType:CanvasComponentsMap,render:CanvasRender) { 
-        this.setMark(shapeType, render)
-        // 创建标注的组
-        render.page.add(this.mark)
-    }
-
-    // 创建标注形状
-    setMark(shapeType: CanvasComponentsMap, render: CanvasRender) { 
         const name = shapeType.name?shapeType.name:"mark"
         this.mark = newObject.group({
             id: shapeType.id,
@@ -25,7 +18,6 @@ export default class mark {
             scaleY: 1,
             draggable: true,
         })
-        
 
         // 创建圆
         const circle = newObject.circle({
@@ -44,7 +36,6 @@ export default class mark {
             shadowOpacity: 0.22,    // 阴影透明度
         });
 
-
         // 创建文本
         const text = newObject.text({
             text: 1,
@@ -55,9 +46,10 @@ export default class mark {
             fill: 'black'
         });
 
-
         // 将circle和text放在mark中
         this.mark.add(circle, text);
+        // 将标注点放入标注层
+        render.pageMark.add(this.mark)
 
         // 计算圆的中心坐标
         const circleCenterX = circle.x();
@@ -70,10 +62,8 @@ export default class mark {
             x: circleCenterX - textWidth / 2,
             y: circleCenterY - textHeight / 2
         });
-        
-        
-        
     }
+
     
 
 }

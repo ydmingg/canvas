@@ -14,8 +14,10 @@ export class CanvasRender {
     root_stage: Konva.Stage | null 
     root_layer: Konva.Layer  
     // stage: Konva.Group // 舞台
-    mark_group: Konva.Group // 初始化标注层
+    pageContent: Konva.Group // 内容页面
+    pageMark: Konva.Group // 标注页面
     transformer: Konva.Transformer
+    imgArr: Array<string> = [] // 存放图片
     // resizeTimer: any = null  // 刷新页面定时器
     // moveStatus: boolean = false // 设置画布移动状态
     startDragPosition: { x: number; y: number } | null = null; // 存储初始拖动位置
@@ -28,6 +30,7 @@ export class CanvasRender {
     
     
     constructor(app: HTMLDivElement, width: number, height: number) { 
+        
         this.app = app    
         this.width = width
         this.height = height
@@ -36,7 +39,8 @@ export class CanvasRender {
         this.root_stage = null
         this.root_layer = newObject.layer()
         // this.stage = newObject.group({ x: 0, y: 0 });
-        this.mark_group = newObject.group({ x: 0, y: 0 })
+        this.pageContent = newObject.group({ x: 0, y: 0 })
+        this.pageMark = newObject.group({ x: 0, y: 0 })
         this.transformer = newObject.transformer()
         this.init()
         // this.stage
@@ -52,8 +56,18 @@ export class CanvasRender {
             draggable: false,
             visible: false,
         })
+        this.pageMark.setAttrs({
+            title: "标注页面",
+            name: "pageMark",
+            x: 0,
+            y: 0,
+            width: this.width,
+            height: this.height
+        })
+        //将标注页面和内容页面放入layer
+        this.root_layer.add(this.pageMark, this.pageContent)
         
-        // this.root_layer.add(this.stage)
+        this.pageMark.moveToTop()
         this.root_stage.add(this.root_layer)
         
         
@@ -76,45 +90,96 @@ export class CanvasRender {
     }
 
     // 加载图片
-    asyncLoadImage(url: string) { 
+    loadImg = src =>{ 
         return new Promise((resolve, reject) => {
             var image = new Image();
-            image.src = url;
+            image.src = src;
             image.onload = () => resolve(image);
             image.onerror = () => reject(new Error('图片地址错误！！！'))
             
         });
     }
 
-    // 渲染图片
-    async image(shapeType: CanvasComponentsMap) { 
-        const image = await this.asyncLoadImage(shapeType.style.imageSrc!)
+    // 图片
+    image(shapeType: CanvasComponentsMap,img) { 
+        // const image = this.loadImg(shapeType.style.imageSrc!)
         // this.image.element = image;
         // this.image.width = image.width;
-        // this.image.height = image.height;   
-        const newImage = new ObjectImage(shapeType, this, image);
+        // this.image.height = image.height;  
+        
+        const newImage = new ObjectImage(shapeType, this, img);
         // // this.shapeAttrs = shapeType
         // // console.log(shapeType);
         
         this.shapeAttrs.push(newImage.image.attrs)
     }
     // 标注
-    async mark(shapeType: CanvasComponentsMap) { 
+    mark(shapeType: CanvasComponentsMap) { 
         const newMark = new ObjectMark(shapeType, this);
         this.shapeAttrs.push(newMark.mark.attrs)
 
     }
     
     // 渲染
-    async render(data: CanvasComponentsMap[]) { 
+    
+    render(data: CanvasComponentsMap[]) {
         for (const item of data) {
-            await this[`${item.type}`](item);
+            if (item.type === "image") {
+                this.imgArr.push(item.style.imageSrc!)
+                // 加载所有的图片之后再进行渲染
+                Promise.all(this.imgArr.map(src => this.loadImg(src))).then(arr => {
+                    // console.log(arr);
+                    
+                    // this[`${item.type}`](item);
+                    // // console.log(item.type === "image");
+                    arr.forEach((e) => {
+                        this.image(item, e)
+                    })
+                    
+
+                    
+                    Events.StageAutoSize(this)
+                    markEvents.setSize(this)
+                    
+                });
+            } else if (item.type === "mark") { 
+                this.mark(item)
+            }
+            
+
+            
+            
         }
 
-        Events.StageAutoSize(this)
-        markEvents.setSize(this)
+        
         
     }
+
+    // const loadImg = src => {
+    //     return new Promise((resolve, reject) => {
+    //         const img = new Image();
+     
+    //         img.src = src;
+     
+    //         img.onload = ()=>void resolve(img);
+    //         img.onerror = ()=>void reject('加载失败');
+    //     });
+    // };
+     
+    // const imgs = [
+    //     'https://book.funxdata.com/public/applogo/ai.png',
+    //     'https://book.funxdata.com/public/applogo/psd.png',
+    // ];
+     
+    // Promise.all(imgs.map(src => loadImg(src))).then(arr => {
+    //     console.log(arr);
+    // });
+
+
+
+
+
+
 
 
     // 交互事件
@@ -136,8 +201,8 @@ export class CanvasRender {
         if (newScale < this.scale_by.min || newScale > this.scale_by.max) return;
 
         // 设置页面的缩放比例
-        this.page.scale({ x: newScale, y: newScale });
-        const allElements = this.page.getClientRect({ relativeTo: this.page });
+        this.pageContent.scale({ x: newScale, y: newScale });
+        const allElements = this.pageContent.getClientRect({ relativeTo: this.pageContent });
 
         const pageWidth = this.width; 
         const pageHeight = this.height; 
@@ -153,20 +218,12 @@ export class CanvasRender {
         // 计算偏移量，并在缩放后将元素居中
         const offsetXDiff = (pageWidth - totalWidth * newScale) / 2 - scaledOffsetX;
         const offsetYDiff = (pageHeight - totalHeight * newScale) / 2 - scaledOffsetY;
-        this.page.position({ x: offsetXDiff, y: offsetYDiff });
+        this.pageContent.position({ x: offsetXDiff, y: offsetYDiff });
         
         // 重新绘制舞台
         this.root_stage.batchDraw();
     }
     
-
-    // 重绘
-    // resize() {
-    //     if (!this.root_stage) return;
-    //     this.init();
-    //     Events.StageAutoSize(this)
-    //     this.root_stage.draw();
-    // }
 
     // 获取UUID
     get UUID() {
@@ -182,57 +239,25 @@ export class CanvasRender {
     }
 
 
-    // 创建舞台
-    get stage(): Konva.Group{ 
-        const x = 0
-        const y = 0
-        const width = this.width
-        const height = this.height
-        const bgColor = '#f6f6f6'
-        const stage = newObject.group({
-            id: this.UUID,
-            title: "页面1",
-            name: "page",
-            x: x, 
-            y: y,
-            width: width, 
-            height: height, 
-        })
-        const stage_bg = new Konva.Rect({
-            x: stage.x(), 
-            y: stage.y(),
-            width: stage.width(), 
-            height: stage.height(), 
-            fill: bgColor
-        });
-        // stage.add(stage_bg);
-        this.root_layer.add(stage)
-        // stage.moveToBottom();
-        // stage_bg.moveToBottom();
-        return stage
-    }
     
-    // 层
-    get page(): Konva.Group{ 
+    // 内容页面
+    get pageContenta(): Konva.Group{ 
         const x = 0
         const y = 0
         const width = this.width
         const height = this.height
         const bgColor = '#f6f6f6'
-        const page = newObject.group({
-            id: this.UUID,
+        const pageContent = newObject.group({
+            id: "页面1",
             title: "页面1",
-            name: "page",
+            name: "pageContent1",
             x: x, 
             y: y,
             width: width, 
             height: height, 
         })
+        // this.pageConteniner.add(pageContent)
 
-        this.stage.add(page)
-
-        this.stage.moveToBottom();
-
-        return page
+        return pageContent
     }
 }

@@ -3,7 +3,7 @@ export const rt = (canvas, render) => {
 
     // 显示缩放比例
     render.then(() => {
-        // console.log(canvas.root_stage.scaleX());
+        console.log(canvas.root_layer.children);
         
 
         popout.value = Math.round(canvas.scale * 100) + "%"

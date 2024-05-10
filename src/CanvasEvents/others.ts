@@ -9,8 +9,8 @@ function startDrag(startX: number, startY: number, render: CanvasRender) {
     
     // 获取当前画布在全局坐标系统中的位置x和y，并将其存储为上一次舞台位置信息。
     render.startStagePosition = {
-        x: render.page.x(),
-        y: render.page.y()
+        x: render.pageContent.x(),
+        y: render.pageContent.y()
     };
 }
 
@@ -24,8 +24,8 @@ function appMoving(mouseX: number, mouseY: number, render: CanvasRender) {
     const deltaX = mouseX - render.startDragPosition.x;
     const deltaY = mouseY - render.startDragPosition.y;
     // 使用计算出的位移量更新画布（舞台）在全局坐标系统中的位置。
-    render.page.x(render.startStagePosition.x + deltaX);
-    render.page.y(render.startStagePosition.y + deltaY);
+    render.pageContent.x(render.startStagePosition.x + deltaX);
+    render.pageContent.y(render.startStagePosition.y + deltaY);
 }
 
 // 处理在拖拽操作结束时被调用以重置相关状态。

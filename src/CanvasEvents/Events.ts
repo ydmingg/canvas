@@ -9,7 +9,7 @@ function StageAutoSize(render: CanvasRender) {
     const pagePadding = 20
     const pageWidth = render.width - pagePadding*2; 
     const pageHeight = render.height - pagePadding*2; 
-    const allElements = render.page.getClientRect({ relativeTo: render.page });
+    const allElements = render.pageContent.getClientRect({ relativeTo: render.pageContent });
     
     // 计算元素总体积和偏移量
     const totalWidth = allElements.width;
@@ -22,13 +22,13 @@ function StageAutoSize(render: CanvasRender) {
     if (scaleBy<= render.scale_by.min || render.scale >= render.scale_by.max) return;
 
     // 检查元素总体积是否超过了舞台的宽度或高度
-    if (!render.booleanZoom && (allElements.width > render.page.width() || allElements.height > render.page.height())) {
+    if (!render.booleanZoom && (allElements.width > render.pageContent.width() || allElements.height > render.pageContent.height())) {
         // 计算新的缩放比例，使得元素能在不超出舞台尺寸的情况下尽可能大地显示，同时留出20像素的边距
         scaleBy = Math.min(
             // 计算水平方向的缩放因子
-            (render.page.width() - 20) / allElements.width,
+            (render.pageContent.width() - 20) / allElements.width,
             // 计算垂直方向的缩放因子
-            (render.page.height() - 20) / allElements.height
+            (render.pageContent.height() - 20) / allElements.height
         );
 
         // 计算水平和垂直方向上的缩放比例
@@ -51,7 +51,7 @@ function StageAutoSize(render: CanvasRender) {
     // 计算偏移量，并在缩放后将元素居中
     const offsetXDiff = (pageWidth - totalWidth * scaleBy) / 2 - scaledOffsetX;
     const offsetYDiff = (pageHeight - totalHeight * scaleBy) / 2 - scaledOffsetY;
-    render.page.position({ x: offsetXDiff, y: offsetYDiff });
+    render.pageContent.position({ x: offsetXDiff, y: offsetYDiff });
 
     
     // const stageBackground = new Konva.Rect({
@@ -87,11 +87,11 @@ function Wheel(event: any, render: CanvasRender) {
     let direction = event.evt.deltaY > 0 ? -1 : 1;
     
     // 获取当前舞台的X轴缩放比例
-    const oldScale = render.page.scaleX();
+    const oldScale = render.pageContent.scaleX();
     // 计算鼠标点相对于未缩放舞台的位置
     const mousePointTo = {
-        x: (position.x - render.page.x()) / oldScale,
-        y: (position.y - render.page.y()) / oldScale
+        x: (position.x - render.pageContent.x()) / oldScale,
+        y: (position.y - render.pageContent.y()) / oldScale
     }
 
     // 根据滚轮滚动方向调整缩放比例，并限制在允许范围内
@@ -106,7 +106,7 @@ function Wheel(event: any, render: CanvasRender) {
     }
 
     // 滑动滚轮时，设置舞台垂直移动
-    render.page.y(render.page.y() + step * direction)
+    render.pageContent.y(render.pageContent.y() + step * direction)
     
     render.scale = oldScale
     
@@ -118,11 +118,11 @@ function Wheel(event: any, render: CanvasRender) {
         event.evt.stopPropagation();
 
         // 更新舞台的缩放比例
-        render.page.scale({ x: newScale, y: newScale })
+        render.pageContent.scale({ x: newScale, y: newScale })
         
       
         // 更新舞台的位置坐标
-        render.page.position(newPosition)
+        render.pageContent.position(newPosition)
         render.scale = newScale
         
     }
@@ -224,16 +224,16 @@ function mouseMove(event: any, render: CanvasRender) {
             // 计算缩放比例
             const scale = currentDistance / render.pinchStartDistance;
             // 获取舞台实例，并获取当前的水平缩放值
-            const oldScale = render.page.scaleX();
+            const oldScale = render.pageContent.scaleX();
             // 计算新的缩放值
             const newScale = oldScale * scale;
             // 计算舞台中心与当前触摸点中点之间的偏移量
-            const offsetX = render.page.x() - midpoint.x;
-            const offsetY = render.page.y() - midpoint.y;
+            const offsetX = render.pageContent.x() - midpoint.x;
+            const offsetY = render.pageContent.y() - midpoint.y;
             // 更新舞台的缩放属性
-            render.page.scale({ x: newScale, y: newScale });
+            render.pageContent.scale({ x: newScale, y: newScale });
             // 根据缩放比例调整舞台位置以保持视觉上的缩放中心不变
-            render.page.position({
+            render.pageContent.position({
                 x: midpoint.x + offsetX * scale,
                 y: midpoint.y + offsetY * scale,
             });
