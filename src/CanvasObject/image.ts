@@ -13,16 +13,16 @@ export default class image {
             id: shapeType.id,
             title: `图片${allShapeImage?.length + 1}`,
             image: image,
-            name:"image",
-            x: shapeType.params.x,
-            y: shapeType.params.y,
-            width: shapeType.params.width?shapeType.params.width:image.width,
-            height: shapeType.params.height?shapeType.params.height:image.height,
-            scaleX: shapeType.params.scaleX,
-            scaleY: shapeType.params.scaleY,
-            
-            stroke: shapeType.params.borderColor,
-            strokeWidth: shapeType.params.borderSize,
+            name:shapeType.name?shapeType.name:"image",
+            x: shapeType.x,
+            y: shapeType.y,
+            width: shapeType.width?shapeType.width:image.width,
+            height: shapeType.height?shapeType.height:image.height,
+            scaleX: shapeType.style.scaleX,
+            scaleY: shapeType.style.scaleY,
+
+            stroke: shapeType.style.borderColor,
+            strokeWidth: shapeType.style.borderSize,
 
         })
 

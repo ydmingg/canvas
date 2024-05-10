@@ -18,7 +18,6 @@ export default class markEvents {
                 scaleX: markSize.scaleX,
                 scaleY: markSize.scaleY,
             });
-            
         })
         
     

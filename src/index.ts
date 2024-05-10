@@ -15,45 +15,40 @@ const src2 = "https://book.funxdata.com/public/applogo/psd.png"
 // 外部图片数据
 let data1 = [
     {
-        id: "image01",
-        type: "Component_View",
-        // title: '图片',
-        params: {
+        id: "001",
+        type: "image",
+        style: {
             imageSrc: src1,
             draggable: true,
             
         }
     },
     {
-        id: "image02",
-        type: "Component_View",
-        // title: '图片',
-        params: {
+        id: "001",
+        type: "image",
+        x: 200,
+        y: 200,
+        style: {
             imageSrc: src2,
-            x: 200,
-            y: 200
         }
     },
 ]
+
 // 外部标注数据
 let data2 = [
     {
-        id: "comment01",
-        type: "Component_Comment",
-        // title: "标注图形",
-        params: {
-            x: 40,
-            y: 40
-        }
+        id: "001",
+        type: "mark",
+        x: 40,
+        y: 40,
+        style: {}
     },
     {
-        id: "comment02",
-        type: "Component_Comment",
-        // title: "标注图形",
-        params: {
-            x: 120,
-            y: 120
-        }
+        id: "002",
+        type: "mark",
+        x: 120,
+        y: 120,
+        style: {}
     }
     
 ]
@@ -65,29 +60,3 @@ const render = canvas.render(data)
 
 // 渲染dom
 code(canvas, render);
-
-
-
-
-
-
-//
-// app.addEventListener('click', (e) => { 
-//     console.log(e.offsetX, e.offsetY);
-//     console.log(canvas.scale);
-    
-    
-//     canvas.render([{
-//         id: "comment01",
-//         type: "Component_Comment",
-//         // title: "标注图形",
-    
-//         params: {
-//             x: e.offsetX,
-//             y: e.offsetY
-//         }
-//     }])
-
-    
-    
-// })

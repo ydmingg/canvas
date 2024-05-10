@@ -12,18 +12,20 @@ export default class mark {
     }
 
     // 创建标注形状
-    setMark(shapeType:CanvasComponentsMap, render:CanvasRender) { 
+    setMark(shapeType: CanvasComponentsMap, render: CanvasRender) { 
+        const name = shapeType.name?shapeType.name:"mark"
         this.mark = newObject.group({
             id: shapeType.id,
             title: "标注点",
             name: "mark",
             obj:this.mark,
-            x: shapeType.params.x,
-            y: shapeType.params.y,
+            x: shapeType.x,
+            y: shapeType.y,
             scaleX: 1,
             scaleY: 1,
             draggable: true,
         })
+        
 
         // 创建圆
         const circle = newObject.circle({

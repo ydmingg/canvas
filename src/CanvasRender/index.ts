@@ -13,7 +13,7 @@ export class CanvasRender {
     scale_by: { value: number; min: number; max: number } //基础缩放倍数为1.05,最小0.02，最大256
     root_stage: Konva.Stage | null 
     root_layer: Konva.Layer  
-    stage: Konva.Group // 舞台
+    // stage: Konva.Group // 舞台
     mark_group: Konva.Group // 初始化标注层
     transformer: Konva.Transformer
     // resizeTimer: any = null  // 刷新页面定时器
@@ -35,11 +35,11 @@ export class CanvasRender {
         this.scale_by = { value: 1.05, min: 0.02, max: 256 }
         this.root_stage = null
         this.root_layer = newObject.layer()
-        this.stage = newObject.group({ x: 0, y: 0 });
+        // this.stage = newObject.group({ x: 0, y: 0 });
         this.mark_group = newObject.group({ x: 0, y: 0 })
         this.transformer = newObject.transformer()
         this.init()
-        this.stage
+        // this.stage
         
     }
 
@@ -52,51 +52,8 @@ export class CanvasRender {
             draggable: false,
             visible: false,
         })
-         //     const x = 0
-    //     const y = 0
-    //     const width = this.width
-    //     const height = this.height
-    //     const bgColor = '#f6f6f6'
-    //     const stage = newObject.group({
-    //         id: this.UUID,
-    //         title: "页面1",
-    //         name: "page",
-    //         x: x, 
-    //         y: y,
-    //         width: width, 
-    //         height: height, 
-    //     })
-    //     const stage_bg = new Konva.Rect({
-    //         x: stage.x(), 
-    //         y: stage.y(),
-    //         width: stage.width(), 
-    //         height: stage.height(), 
-    //         fill: bgColor
-    //     });
-    //     stage.add(stage_bg);
-    //     this.root_layer.add(stage)
-    //     stage.moveToBottom();
-    //     stage_bg.moveToBottom();
-    //     return stage
-
-        this.stage.setAttrs({
-            id: this.UUID,
-            title: "页面1",
-            name: "page",
-            x: 0, 
-            y: 0,
-            width: this.width, 
-            height: this.height, 
-        })
-        const stage_bg = new Konva.Rect({
-            x: this.stage.x(), 
-            y: this.stage.y(),
-            width: this.stage.width(), 
-            height: this.stage.height(), 
-            fill: "red"
-        });
-        this.stage.add(stage_bg);
-        this.root_layer.add(this.stage)
+        
+        // this.root_layer.add(this.stage)
         this.root_stage.add(this.root_layer)
         
         
@@ -130,30 +87,21 @@ export class CanvasRender {
     }
 
     // 渲染图片
-    async Component_View(shapeType: CanvasComponentsMap) { 
-        if (!shapeType.params.imageSrc) return;
-        const image = await this.asyncLoadImage(shapeType.params.imageSrc)
+    async image(shapeType: CanvasComponentsMap) { 
+        const image = await this.asyncLoadImage(shapeType.style.imageSrc!)
         // this.image.element = image;
         // this.image.width = image.width;
         // this.image.height = image.height;   
-        const Img = new ObjectImage(shapeType, this, image);
+        const newImage = new ObjectImage(shapeType, this, image);
         // // this.shapeAttrs = shapeType
         // // console.log(shapeType);
         
-        this.shapeAttrs.push({
-            attrs: Img.image.attrs,
-            element: Img.image
-        })
-        
-        return Img;
+        this.shapeAttrs.push(newImage.image.attrs)
     }
     // 标注
-    async Component_Comment(shapeType: CanvasComponentsMap) { 
-        const Mark = new ObjectMark(shapeType, this);
-        this.shapeAttrs.push({
-            attrs: Mark.mark.attrs,
-            element: Mark.mark
-        })
+    async mark(shapeType: CanvasComponentsMap) { 
+        const newMark = new ObjectMark(shapeType, this);
+        this.shapeAttrs.push(newMark.mark.attrs)
 
     }
     
@@ -232,36 +180,39 @@ export class CanvasRender {
           return (c === 'x' ? r : r & 0x3 | 0x8).toString(16)
         })
     }
+
+
     // 创建舞台
-    // get stage(): Konva.Group{ 
-    //     const x = 0
-    //     const y = 0
-    //     const width = this.width
-    //     const height = this.height
-    //     const bgColor = '#f6f6f6'
-    //     const stage = newObject.group({
-    //         id: this.UUID,
-    //         title: "页面1",
-    //         name: "page",
-    //         x: x, 
-    //         y: y,
-    //         width: width, 
-    //         height: height, 
-    //     })
-    //     const stage_bg = new Konva.Rect({
-    //         x: stage.x(), 
-    //         y: stage.y(),
-    //         width: stage.width(), 
-    //         height: stage.height(), 
-    //         fill: bgColor
-    //     });
-    //     stage.add(stage_bg);
-    //     this.root_layer.add(stage)
-    //     stage.moveToBottom();
-    //     stage_bg.moveToBottom();
-    //     return stage
-    // }
-    //
+    get stage(): Konva.Group{ 
+        const x = 0
+        const y = 0
+        const width = this.width
+        const height = this.height
+        const bgColor = '#f6f6f6'
+        const stage = newObject.group({
+            id: this.UUID,
+            title: "页面1",
+            name: "page",
+            x: x, 
+            y: y,
+            width: width, 
+            height: height, 
+        })
+        const stage_bg = new Konva.Rect({
+            x: stage.x(), 
+            y: stage.y(),
+            width: stage.width(), 
+            height: stage.height(), 
+            fill: bgColor
+        });
+        // stage.add(stage_bg);
+        this.root_layer.add(stage)
+        // stage.moveToBottom();
+        // stage_bg.moveToBottom();
+        return stage
+    }
+    
+    // 层
     get page(): Konva.Group{ 
         const x = 0
         const y = 0

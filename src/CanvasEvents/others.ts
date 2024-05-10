@@ -147,10 +147,12 @@ function deleteElements(Id: string, render: CanvasRender) {
     // 获取页面上的所有元素
     const commentsNode = render.shapeAttrs.filter((item) => item.attrs.id === Id);
     
+    // console.log(render.shapeAttrs);
+    
     // 遍历找到的元素，并从舞台上移除它们
-    commentsNode.forEach(({ element }) => { 
-        element.destroy();
-    })
+    // commentsNode.forEach(({ element }) => { 
+    //     element.destroy();
+    // })
     
 }
 
