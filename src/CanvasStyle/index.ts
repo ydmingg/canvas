@@ -2,7 +2,7 @@
  * 表示Canvas中图形的属性类型
  * 
 */
-export interface CanvasStyle {
+export interface CanvasDetail {
     background?: string;          // 可选: 元素的填充颜色
     draggable?: boolean;          // 可选: 指示元素是否可拖动
     imageSrc?: string;            // 可选: 图像元素的源URL

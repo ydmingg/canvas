@@ -56,14 +56,16 @@ let data2 = [
 let data = [...data1,...data2]
 
 // 渲染元素（只能就行一次）
-canvas.render(data)
+// canvas.render(data)
+console.log(canvas);
+
 
 // 渲染dom
 // code(canvas, render);
 // console.log(canvas.root_layer.children);
 
 
-canvas.pageContent.add(canvas.pageContenta)
+// canvas.pageContent.add(canvas.pageContenta)
 
 
 //
